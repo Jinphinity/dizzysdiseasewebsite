@@ -5,6 +5,54 @@
 
 ---
 
+## 0. Scope Lock Update (2026-03-02, User-Confirmed)
+
+This section supersedes older notes where they conflict.
+
+### Locked MVP Direction
+- Build a **playable marketing website** with a **pre-rendered, realistic horror look** (Resident Evil remake style influence): fixed background scenes, first-person POV framing, 2D animated enemies overlaid on top.
+- Keep the experience **lightweight**: most visuals are static pre-rendered images; only interaction layers animate (enemy, loot, UI, puzzle overlays).
+- Keep the navigation feeling like **one live app shell** (no jarring full-page resets), but still preserve clear page/room navigation for assignment grading.
+- Core interaction starts with **gun pickup in center frame**, which triggers the first zombie encounter.
+- Include **audio** and **analytics** in MVP.
+- Deadline is **March 9, 2026** (7 days from planning date).
+
+### Explicitly Out of MVP (Deferred)
+- Translation combat (CunningLinguist web mechanic)
+- Hayt state web mode
+- Faction system/theme switching
+
+### MVP Core Loop (Approved)
+1. Enter room (pre-rendered scene)
+2. Investigate/click hotspots
+3. Pick up weapon / key item
+4. Trigger zombie encounter (animated overlay + synced hitbox)
+5. Loot reward
+6. Use loot at merchant / unlock puzzle path
+7. Read lore/marketing details embedded as clues
+8. Use discovered clues to solve simple puzzle/terminal locks
+
+---
+
+## 0.1 Latest Sync (2026-03-03)
+
+### New Research Prompt Pack
+- Added [`research-prompts.md`](research-prompts.md) with three implementation-grade prompts:
+  - Master follow-up research (strict + expansive)
+  - AI pre-rendered horror art pipeline
+  - Fast 2-hour validation triage
+
+### Current Research File Status
+- `Research/point-click-research-html.md` is preserved as the latest draft input.
+- This draft still contains unresolved citation placeholders and should be treated as **working notes**, not final implementation evidence.
+
+### Immediate Next Step (Recommended)
+1. Run Prompt 3 for a fast blocker pass.
+2. Run Prompt 1 for full source-verified replacement research.
+3. Update/replace `Research/point-click-research-html.md` with validated findings only.
+
+---
+
 ## 1. What This Project Is
 
 ### The Assignment (Hard Requirement)
@@ -124,7 +172,9 @@ DizzysDiseaseWebsite/
 ## 4. The Core Concept: Website = Game
 
 ### Navigation Model
-Each HTML page = one explorable **room**. No WASD. Pure mouse. Point-and-click to interact with everything.
+Each route = one explorable **room**. No WASD. Pure mouse. Point-and-click to interact with everything.
+
+The app uses a **single persistent shell feel** (smooth room swaps and persistent HUD), while still exposing route-level navigation for assignment and shareable links.
 
 ```
 /            → Safehouse     (Home — tutorial encounter)
@@ -165,17 +215,16 @@ Every major Dizzy's Disease mechanic has a browser-native equivalent. This is th
 
 | DD Mechanic | Browser Implementation | Complexity | Page |
 |---|---|---|---|
-| Wobbly aim / steady shot | Custom cursor: JS lerp + noise, settles when mouse is still | Low | Landing |
-| Wave survival | JS enemy spawner, CSS zombie animation, click-to-shoot | Medium | Landing |
+| Gun pickup trigger | Center-frame hotspot activates encounter state machine | Low | Landing |
+| Pre-rendered room scenes | AVIF/WebP background per room, fixed perspective | Low | All pages |
+| Zombie encounter | 2D sprite/video overlay in front of pre-rendered scene | Medium | Landing + selected rooms |
+| Hitbox sync with animation | Frame/time-indexed hitboxes tied to enemy animation timeline | Medium | Encounters |
 | Weapon durability | MFD durability bar depletes on use | Low | All pages |
 | Maintenance mini-game | Canvas wire/node puzzle | Medium | /comms |
-| CunningLinguist (translation combat) | Click correct translation to steady aim + fire | Low | /comms + encounters |
 | Surgical harvesting | Canvas steady-hand trace mini-game | Medium | /armory |
-| Hayt death system | CSS grayscale state, alternate DOM layers, localStorage | Medium | All pages |
-| Faction system | First-visit modal, CSS variable theming, localStorage | Low | First visit |
 | Bio-material economy | Loot drops as currency, content locked behind spending | Medium | All pages |
-| Dismemberment/hit effects | CSS animation on zombie sprite (limb flash/detach) | Low | Encounters |
-| Mastermind AI | Grouped zombie behavior coordination | High | V2 |
+| Merchant loop | Buy/sell equipment with loot currency | Medium | /armory or /market sub-room |
+| Clue-gated puzzle terminals | Password/key item found in lore pages unlocks terminals | Medium | /archive + /comms + /devlog |
 
 ---
 
@@ -197,14 +246,12 @@ Every major Dizzy's Disease mechanic has a browser-native equivalent. This is th
 
 ### Page 2: `/archive` — The Archive Terminal (About)
 **Satisfies**: Company history, team, values
-**Game layer**: Lore discovery + Hayt encounter
+**Game layer**: Lore discovery + clue discovery
 
 - Dusty file room aesthetic with a glowing green-phosphor terminal
 - Click terminal → MFD right panel shows "personnel files" (team bios as survivor records)
 - Click filing cabinet → company/game history as in-world survivor logs
-- A **Hayt ghost** drifts across the room (non-threatening CSS animation — semi-transparent, desaturated)
-- If `playerState === 'hayt'` in localStorage: the ghost stops and speaks (text in log bar) — exclusive ghost dialogue
-- Hidden document in bottom drawer: "Biopunk Origins" — first ARG seed (partially redacted)
+- Hidden document in bottom drawer: "Biopunk Origins" (partially redacted) contains a puzzle clue used later in `/comms`
 
 ### Page 3: `/armory` — The Armory (Services/Features)
 **Satisfies**: Product features, service descriptions
@@ -219,14 +266,14 @@ Every major Dizzy's Disease mechanic has a browser-native equivalent. This is th
 
 ### Page 4: `/comms` — The Radio Room (Contact)
 **Satisfies**: Contact form, contact information
-**Game layer**: Translation challenge + wire puzzle
+**Game layer**: Wire puzzle + terminal lock
 
 - Radio equipment aesthetic, distress signal beeping (optional Web Audio API)
 - Contact form styled as "Transmission Log":
   - Name field = "Callsign"
   - Email field = "Frequency"
   - Message field = "Broadcast Content"
-- **CunningLinguist challenge**: Before form submits, a word prompt appears — translate it correctly to "authenticate broadcast." Three click options. Correct = transmit. Wrong = retry.
+- **Terminal lock challenge**: Before full terminal access, user enters a simple password/clue discovered from `/archive` or `/devlog`.
 - **Maintenance Panel** hotspot: opens canvas wire/node puzzle. Completing it unlocks a "hidden frequency" — ARG Easter egg, maybe a Discord invite or lore document URL.
 - Functional form submit (use Formspree or similar static form handler)
 
@@ -289,63 +336,32 @@ Cursor changes shape based on context:
 - Over enemy: crosshair/weapon sight SVG
 - Over loot: grabbing hand SVG
 - Over door/hotspot: door arrow SVG
-- Hayt mode: ghostly wisp SVG
 
-### Hayt Death State
+### Encounter Trigger + Animated Enemy Overlay
 
 ```js
-// On death:
-function enterHaytMode(currentPage) {
-  localStorage.setItem('playerState', 'hayt');
-  localStorage.setItem('haytLocation', currentPage);
-  document.body.classList.add('hayt-mode');
-  // Reveal hidden content
-  document.querySelectorAll('.hayt-only').forEach(el => el.style.display = 'block');
-  document.querySelectorAll('.living-only').forEach(el => el.style.display = 'none');
+// Player clicks center-frame weapon pickup
+function onWeaponPickup() {
+  gameState.weaponEquipped = true;
+  startEncounter("intro-zombie");
+}
+
+function startEncounter(id) {
+  const encounter = encounterConfig[id];
+  playEnemyAnimation(encounter.animation); // sprite sequence or short video loop
+  enableHitboxLayer(encounter.hitboxTimeline);
 }
 ```
 
-```css
-body.hayt-mode {
-  filter: grayscale(0.9) sepia(0.3);
-  animation: static-flicker 8s infinite;
-}
-@keyframes static-flicker {
-  0%, 98%, 100% { filter: grayscale(0.9) sepia(0.3); }
-  99% { filter: grayscale(1) brightness(1.4) sepia(0.3); }
-}
-```
-
-Resurrection: find "serum" item hidden somewhere in game world (requires backtracking / exploration). On collect: `localStorage.setItem('playerState', 'alive')`, remove class.
-
-### Translation Combat (CunningLinguist Demo)
+### Frame/Time-Synced Hitboxes (Video or Sprite Sequence)
 
 ```js
-// Word database
-const challenges = [
-  { prompt: "SHOOT", options: ["Disparar", "Correr", "Saltar"], correct: "Disparar" },
-  { prompt: "RELOAD", options: ["Recarga", "Corre", "Ataca"], correct: "Recarga" },
-  // ...
+// Map frame ranges to hit regions for deterministic hit detection
+const hitboxTimeline = [
+  { startFrame: 0, endFrame: 12, rect: [610, 220, 180, 260], damageMult: 1.0 },
+  { startFrame: 13, endFrame: 24, rect: [590, 210, 220, 300], damageMult: 1.1 },
+  { startFrame: 25, endFrame: 36, rect: [560, 200, 280, 360], damageMult: 1.2 }
 ];
-
-function showChallenge() {
-  const c = challenges[Math.floor(Math.random() * challenges.length)];
-  // Render to MFD left panel
-  mfdEl.innerHTML = `
-    <div class="challenge-prompt">TRANSLATE: "${c.prompt}"</div>
-    ${c.options.map(o => `<button onclick="checkAnswer('${o}', '${c.correct}')">${o}</button>`).join('')}
-  `;
-}
-
-function checkAnswer(selected, correct) {
-  if (selected === correct) {
-    wobbleMultiplier *= 0.3; // cursor steadies dramatically
-    setTimeout(() => autoFire(), 400); // crosshair locks on → fires
-  } else {
-    wobbleMultiplier *= 2.5; // cursor spasms
-    health -= 5; // zombie advances, takes a swipe
-  }
-}
 ```
 
 ### Surgical Harvesting Mini-Game (Canvas)
@@ -366,24 +382,23 @@ Procedure:
 5. 10-second timer (decomposition)
 6. On complete → quality calculation → loot item added to inventory
 
-### Faction System
+### Merchant + Puzzle Gating
 
 ```js
-// First visit check
-if (!localStorage.getItem('faction')) {
-  showFactionSelect(); // Modal on top of landing page
+// Minimal economy loop
+function buyItem(itemId) {
+  const item = merchantStock[itemId];
+  if (player.loot >= item.cost) {
+    player.loot -= item.cost;
+    player.inventory.push(itemId);
+  }
 }
 
-function chooseFaction(faction) {
-  localStorage.setItem('faction', faction);
-  const colors = {
-    military: { accent: '#1a7fcf', bg: '#0a1520' },
-    science:  { accent: '#2db85a', bg: '#0a1a0e' },
-    cult:     { accent: '#b82d2d', bg: '#1a0a0a' },
-  };
-  document.documentElement.style.setProperty('--accent', colors[faction].accent);
-  document.documentElement.style.setProperty('--bg-deep', colors[faction].bg);
-  // Persist via localStorage + re-apply on every page load
+// Lore clue/password gate
+function unlockTerminal(input) {
+  if (input.trim().toLowerCase() === gameState.discoveredPassword) {
+    gameState.terminalUnlocked = true;
+  }
 }
 ```
 
@@ -399,15 +414,15 @@ GameMarketingKit/
 │   ├── cursor-system.js       (wobble, inertia, context shapes)
 │   ├── mfd-panel.js           (SS1-style persistent UI panels)
 │   ├── inventory-system.js    (drag-drop, localStorage)
-│   ├── state-machine.js       (alive/hayt/faction/unlocks)
-│   ├── enemy-spawner.js       (configurable wave system)
+│   ├── state-machine.js       (encounter/loot/puzzle progression)
+│   ├── encounter-engine.js    (enemy overlay state + hitbox sync)
 │   └── mini-game-engine.js    (canvas mini-game framework)
 ├── mechanics/                 ← Configurable per game
 │   ├── wobble-aim.js          (tune LERP, noise, weapon shapes)
 │   ├── surgical-harvest.js    (steady-hand mini-game)
-│   ├── translation-combat.js  (word-match to fire)
+│   ├── encounter-shooting.js  (pickup trigger + shooting loop)
 │   ├── durability-display.js  (weapon condition MFD widget)
-│   └── faction-chooser.js     (persistent faction + CSS theming)
+│   └── merchant-loop.js       (buy/sell + simple economy)
 ├── themes/                    ← Swap entirely per game
 │   ├── biopunk/               (Dizzy's Disease)
 │   │   ├── variables.css      (CSS custom properties)
@@ -455,7 +470,6 @@ Seeded in Phase 1, activated later:
 - **HTML Comments**: Base64-encoded lore fragments
 - **Morse Code**: Hidden in post publish timestamps or image alt text
 - **Hidden Frequency**: Completing /comms wire puzzle → reveals URL → leads to a locked Discord channel or Notion page
-- **Hayt-Exclusive Content**: Players who die and enter Hayt mode see content the living can't — different ARG branch
 
 Research reference: `Research/ARGs-Meta-Games.md` — covers The Beast (2001), I Love Bees (2004), Year Zero (NIN), Why So Serious (Dark Knight)
 
@@ -464,41 +478,40 @@ Research reference: `Research/ARGs-Meta-Games.md` — covers The Beast (2001), I
 ## 11. Build Sequence (Assignment MVP Priority)
 
 ### Sprint 1 — Structure (First Priority)
-- [ ] HTML skeleton: all 5 pages + persistent MFD shell
-- [ ] CSS: biopunk base variables, MFD panel layout, navigation doors
-- [ ] Custom cursor (styled, no wobble yet)
-- [ ] localStorage init: playerState, faction, inventory
+- [ ] 5-page skeleton + persistent MFD shell
+- [ ] Route-safe navigation with one-shell transition feel
+- [ ] CSS: pre-rendered scene framing, HUD layout, hotspot layers
+- [ ] localStorage init: inventory, loot currency, puzzle flags
 
 ### Sprint 2 — Core Game Loop
-- [ ] Wobbly cursor JS (lerp + velocity tracking + noise)
-- [ ] Landing page zombie (CSS animated sprite)
-- [ ] Click-to-shoot with hit detection (JS bounding box)
+- [ ] Landing page center weapon pickup trigger
+- [ ] Zombie encounter overlay (sprite/video) with synced hitboxes
+- [ ] Click-to-shoot with deterministic hit detection
 - [ ] Loot drop + MFD right panel inventory update
 - [ ] Health bar (left MFD) decrements on damage
 
 ### Sprint 3 — All 5 Pages
-- [ ] Archive: terminal click interaction, personnel files, Hayt ghost CSS animation
+- [ ] Archive: terminal interaction + diary/lore clue discovery
 - [ ] Armory: weapon rack hotspots, description popups, durability bar display
-- [ ] Comms: contact form (Formspree), transmission aesthetic, CunningLinguist gate
+- [ ] Comms: contact form + transmission aesthetic + terminal password gate
 - [ ] Devlog: cork board CSS, 2 blog posts (researched content)
 
 ### Sprint 4 — Mini-Games
 - [ ] Canvas wire puzzle (Comms maintenance panel)
 - [ ] Canvas harvesting mini-game (Armory surgical station)
-- [ ] Hayt death state (CSS filter + `.hayt-only` content swap)
-- [ ] Faction chooser modal (first visit)
+- [ ] Merchant buy/sell panel (basic economy loop)
+- [ ] Key-item + clue-based puzzle unlocking flow
 
 ### Sprint 5 — Polish & Launch
 - [ ] Bio-material economy (loot → spend to unlock)
-- [ ] Resurrection serum hidden item (enables Hayt recovery)
 - [ ] Web Audio API: gunshot, zombie groan, UI blips
-- [ ] Mobile graceful degradation (tap instead of point-and-click)
-- [ ] Analytics: Plausible or Umami (privacy-first)
+- [ ] Mobile graceful degradation (tap-friendly hotspots)
+- [ ] Analytics instrumentation (free-tier friendly)
 - [ ] ARG Phase 1 seeds planted (steganography, Base64 comments)
 
 ---
 
-## 12. Tech Stack Decision (TBD — Open Question for User)
+## 12. Tech Stack Decision (Locked for MVP)
 
 **Options evaluated**:
 
@@ -509,22 +522,27 @@ Research reference: `Research/ARGs-Meta-Games.md` — covers The Beast (2001), I
 | Svelte | Reactive state management, small bundle | Learning curve if unfamiliar |
 | React | Familiar if they know it | Overkill for this scope |
 
-**Likely recommendation**: Vite + vanilla JS — gets module system and hot reload without framework overhead. Canvas mini-games work natively.
+**Chosen recommendation**: Vite + vanilla JS — fastest setup, low overhead, good module structure, and native Canvas/media support.
 
-**Deployment**: GitHub Pages (already have GitHub account + this repo), or Netlify for form handling (Formspree alternative).
+**Deployment**: GitHub Pages for hosting (free for public repos) + Formspree for contact form handling + Cloudflare Web Analytics (or GA4 if required).
 
 ---
 
-## 13. Open Questions (Must Resolve Before Building)
+## 13. Resolved Decisions + Execution Defaults
 
-1. **Tech stack**: Vanilla JS? Vite? Framework preference?
-2. **Art direction**: Pure CSS art (radically minimal), hand-drawn SVG illustration, or photographic assets?
-3. **Assignment deadline**: How many days/weeks available?
-4. **Contact form**: Formspree (free tier) or Netlify Forms or something else?
-5. **Audio**: Include Web Audio API? (Great atmosphere, tricky on mobile autoplay policies)
-6. **Hosting**: GitHub Pages (already set up) or need to configure Netlify?
-7. **Which mechanic is the "hero"**: Should the landing page lead with wobbly aim shooting, or the faction chooser, or something else?
-8. **MPA vs SPA**: Separate `.html` files (simpler) or single-page JS routing (smoother transitions)?
+### Resolved
+1. Tech stack direction: Vite + vanilla JS
+2. Visual direction: realistic pre-rendered scenes, first-person framing
+3. Hero mechanic: center weapon pickup triggers first zombie encounter
+4. De-scoped for MVP: translation combat, Hayt state, faction system
+5. Audio: yes
+6. Analytics: yes
+7. Deadline: March 9, 2026
+
+### Execution defaults (unless explicitly changed)
+1. Contact form provider: Formspree free tier
+2. Routing model: multi-page routes with SPA-like transitions (persistent shell feel + grading-safe URLs)
+3. Enemy animation format: sprite sequences for encounter loops (sync-safe), optional short video only for cinematic moments
 
 ---
 
@@ -549,13 +567,12 @@ Research reference: `Research/ARGs-Meta-Games.md` — covers The Beast (2001), I
 - Synthesized all Dizzy's Disease mechanics into browser-feasible equivalents
 - Established System Shock 1 as the navigation/UI architecture model
 - Designed the 5-page room map (Safehouse, Archive, Armory, Comms, Evidence Board)
-- Designed the MFD layout (persistent health/inventory panels)
-- Designed Hayt death state as a browser-native persistent death mechanic
-- Designed the universal marketing game architecture (`GameMarketingKit/`)
-- Confirmed ARG layer (Phase 3) seeded in Phase 1 content
-- Identified open questions blocking implementation start
+- Locked MVP scope to pre-rendered realistic scenes + lightweight encounter overlays
+- Removed translation combat, Hayt state, and faction system from MVP
+- Confirmed audio + analytics are in MVP
+- Confirmed deadline: March 9, 2026
 
 **What's next**:
-- Answer open questions (tech stack, art direction, deadline, hosting)
-- Begin Sprint 1: HTML skeleton + MFD layout + CSS base
+- Finalize remaining implementation choices (form provider, routing detail, animation format)
+- Begin Sprint 1 immediately: 5-page skeleton + persistent shell + hotspot system
 - The plan file at `~/.claude/plans/spicy-roaming-charm.md` has the sprint breakdown
