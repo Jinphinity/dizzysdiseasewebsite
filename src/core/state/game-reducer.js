@@ -36,6 +36,18 @@ export function gameReducer(state, action) {
       };
     }
 
+    case 'ENCOUNTER_DAMAGED': {
+      const damage = Number(action.payload?.damage ?? 0);
+
+      return {
+        ...state,
+        encounter: {
+          ...state.encounter,
+          hp: Math.max(0, state.encounter.hp - damage)
+        }
+      };
+    }
+
     case 'CLUE_DISCOVERED': {
       const clueKey = action.payload?.clueKey;
       const value = action.payload?.value;
@@ -59,6 +71,42 @@ export function gameReducer(state, action) {
         progress: {
           ...state.progress,
           terminalUnlocked: true
+        }
+      };
+    }
+
+    case 'SET_PROGRESS_FLAG': {
+      const key = action.payload?.key;
+      if (!key) {
+        return state;
+      }
+
+      return {
+        ...state,
+        progress: {
+          ...state.progress,
+          [key]: action.payload?.value
+        }
+      };
+    }
+
+    case 'GRANT_LOOT': {
+      const amount = Number(action.payload?.amount ?? 0);
+      return {
+        ...state,
+        player: {
+          ...state.player,
+          loot: state.player.loot + amount
+        }
+      };
+    }
+
+    case 'ROUTE_VIEWED': {
+      return {
+        ...state,
+        meta: {
+          ...state.meta,
+          lastSeenRoute: action.payload?.route ?? state.meta.lastSeenRoute
         }
       };
     }

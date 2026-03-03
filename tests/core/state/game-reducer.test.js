@@ -48,4 +48,33 @@ describe('gameReducer', () => {
     expect(unlocked.clues.archiveKeyphrase).toBe('silent host');
     expect(unlocked.progress.terminalUnlocked).toBe(true);
   });
+
+  it('updates arbitrary progress flags via SET_PROGRESS_FLAG', () => {
+    const state = createDefaultState();
+    const next = gameReducer(state, {
+      type: 'SET_PROGRESS_FLAG',
+      payload: { key: 'weaponEquipped', value: true }
+    });
+
+    expect(next.progress.weaponEquipped).toBe(true);
+  });
+
+  it('applies encounter damage and updates viewed route', () => {
+    const state = {
+      ...createDefaultState(),
+      encounter: { activeId: 'intro_zombie', hp: 40 }
+    };
+
+    const damaged = gameReducer(state, {
+      type: 'ENCOUNTER_DAMAGED',
+      payload: { damage: 15 }
+    });
+    const routed = gameReducer(damaged, {
+      type: 'ROUTE_VIEWED',
+      payload: { route: '/archive' }
+    });
+
+    expect(damaged.encounter.hp).toBe(25);
+    expect(routed.meta.lastSeenRoute).toBe('/archive');
+  });
 });

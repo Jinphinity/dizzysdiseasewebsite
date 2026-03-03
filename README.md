@@ -9,6 +9,13 @@ npm install
 npm run dev
 ```
 
+Optional live contact integration:
+
+```bash
+cp .env.example .env
+# set VITE_FORMSPREE_ENDPOINT in .env
+```
+
 ## Validate
 
 ```bash
@@ -46,7 +53,7 @@ npm run build
 
 When redesigning, do not rewrite core logic. Swap only these pieces:
 
-1. `src/ui/render-shell.js` (layout and component tree)
+1. `src/ui/render-app.js` (layout and component tree)
 2. `src/styles/*` (theme and visual identity)
 3. Optional route/content adapters under future `src/content/*`
 
@@ -54,5 +61,13 @@ As long as UI triggers engine methods and reads `engine.getState()`, gameplay be
 
 ## Current Scope
 
-This is a backend-first gameplay core + minimal UI proof shell, not final production UX.
+This is the implemented MVP baseline with backend-first gameplay core and swappable presentation.
 See `MVP-SPEC.md` for the full delivery contract.
+
+## Pages
+
+- `index.html` (Home)
+- `archive.html` (About Us)
+- `armory.html` (Services)
+- `comms.html` (Contact Us)
+- `devlog.html` (Blog)

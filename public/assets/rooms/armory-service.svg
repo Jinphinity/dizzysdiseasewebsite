@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960">
+  <rect width="1600" height="960" fill="#121218"/>
+  <rect x="160" y="120" width="1280" height="720" fill="#1c1f2a" stroke="#6f7a9d" stroke-width="8"/>
+  <rect x="300" y="280" width="260" height="360" fill="#2b3142"/>
+  <rect x="1040" y="280" width="260" height="360" fill="#2b3142"/>
+  <text x="800" y="180" fill="#c2cee8" font-size="46" text-anchor="middle" font-family="Verdana">ARMORY SERVICES</text>
+</svg>

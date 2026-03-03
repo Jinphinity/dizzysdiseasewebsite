@@ -35,8 +35,16 @@ export async function createGameEngine({ repository = createNoopRepository() } =
 
     dispatch,
 
+    viewRoute(route) {
+      return dispatch({ type: 'ROUTE_VIEWED', payload: { route } });
+    },
+
     pickupWeapon(payload) {
       return dispatch({ type: 'WEAPON_PICKED_UP', payload });
+    },
+
+    damageEncounter(payload) {
+      return dispatch({ type: 'ENCOUNTER_DAMAGED', payload });
     },
 
     completeEncounter(payload) {
