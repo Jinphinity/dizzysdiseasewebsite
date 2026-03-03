@@ -13,6 +13,7 @@ Primary outcomes:
 - Deliver one clear core loop: explore -> pickup -> encounter -> loot -> unlock.
 - Establish a clean foundation for future user accounts/profiles without requiring backend work now.
 - Preserve explicit hospitality-facing copy so rubric interpretation remains safe for grading.
+- Enforce location-first UX: Home/Archive/Armory/Comms/Devlog must feel like in-world places, not separate website sections.
 
 ## 2. Scope
 
@@ -29,6 +30,7 @@ Primary outcomes:
 - Analytics event instrumentation.
 - Mobile-safe interaction model (tap hotspots, no hover-only critical actions).
 - Hospitality framing layer on all required pages (mission, services, contact, blog context).
+- Diegetic map/location travel system for moving between in-world areas.
 
 ### 2.2 Out of Scope (Deferred)
 - Translation combat system.
@@ -59,10 +61,18 @@ Primary outcomes:
 2. Clarity over complexity: simple interactions that always communicate next possible action.
 3. Assignment compliance by design: each route directly maps to rubric criteria.
 4. Progressive depth: lore doubles as puzzle clue system to reinforce marketing info.
+5. Location-first immersion: every required assignment page is represented as a place in the same game world.
+
+## 4.1 Prime Mandate (Location-First UX)
+
+- Treat Home, Archive, Armory, Comms, and Devlog as physical locations in one connected world.
+- Movement between areas must read as in-world travel (map, doors, transit panel, or equivalent diegetic control).
+- Never present these as disconnected marketing tabs/sections in tone or structure.
+- Assignment labels remain for grading compliance only; player-facing experience remains world-native.
 
 ## 5. Route and Content Specification
 
-## 5.1 Route Map
+## 5.1 Location Map (Assignment Mapping)
 
 | Route | Assignment Requirement | In-World Role | Must-Have Interactions |
 |---|---|---|---|
@@ -71,6 +81,9 @@ Primary outcomes:
 | `/armory` | Services | Merchant/Loadout Room | Services list, buy/sell interaction |
 | `/comms` | Contact Us | Radio Room | Contact form, puzzle terminal unlock |
 | `/devlog` | Blog | Evidence Board | At least 2 lore posts, clue references |
+
+Implementation note:
+- These are location nodes in one world-state. Routing exists for grading/deep links, while UX framing stays diegetic.
 
 ## 5.2 Page-by-Page Requirements
 
@@ -156,6 +169,13 @@ Use explicit language so grader can clearly identify hospitality assignment comp
 | `/armory` | Label offerings as service packages/guest support services with clear descriptions and value tiers. |
 | `/comms` | Provide standard business contact details and inquiry workflow for guests/partners. |
 | `/devlog` | Frame posts as hospitality industry updates + brand development updates. |
+
+## 5.4 Navigation Contract (Mandatory)
+
+- Primary traversal control is a world/map travel interface inside the game HUD or viewport.
+- Route changes should be framed as moving to another room/street/location, not opening a different website section.
+- Navigation labels may include assignment names in secondary text for grading, but the primary label should be location-oriented.
+- Transition style must preserve single-world continuity (no hard context reset in narrative framing).
 
 ## 6. Gameplay and Systems Specification
 
@@ -276,6 +296,7 @@ Rules:
 - Maintain persistent lower HUD shell across route transitions.
 - Route transitions should feel continuous (fade/slide <= 300ms).
 - Provide visible feedback for every click outcome: success, locked, insufficient loot, missed shot.
+- Ensure location travel UX (map/room movement) is always primary over generic site navigation patterns.
 
 ## 8. Visual/Asset Pipeline Specification
 
@@ -513,6 +534,7 @@ Migration path:
 
 MVP is complete only if all are true:
 - Five assignment pages are present and fully compliant.
+- The five assignment pages are experienced as in-world locations connected by diegetic travel.
 - Core gameplay loop is playable end-to-end.
 - Deferred systems are not partially implemented in a way that creates dead UI.
 - Contact form works in production.

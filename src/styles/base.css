@@ -129,16 +129,96 @@ body {
 
 .hotspot {
   position: absolute;
-  border: 1px dashed rgba(117, 212, 127, 0.65);
-  background: rgba(117, 212, 127, 0.15);
+  border: 1px dashed rgba(117, 212, 127, 0.45);
+  background: rgba(117, 212, 127, 0.1);
   border-radius: 6px;
   cursor: pointer;
+  transition:
+    box-shadow 120ms ease,
+    transform 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease;
 }
 
 .hotspot:hover,
 .hotspot:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
+  box-shadow:
+    0 0 0 2px rgba(117, 212, 127, 0.35),
+    0 0 16px rgba(117, 212, 127, 0.35);
+  transform: scale(1.02);
+}
+
+.hotspot::after {
+  content: attr(data-hotspot-label);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  padding: 0.22rem 0.45rem;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: rgba(8, 13, 18, 0.95);
+  color: var(--ink);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+  opacity: 1;
+}
+
+.hotspot--door {
+  border-style: solid;
+}
+
+.hotspot--door.hotspot--unlocked:hover,
+.hotspot--door.hotspot--unlocked:focus-visible {
+  box-shadow:
+    0 0 0 2px rgba(117, 212, 127, 0.4),
+    0 0 24px rgba(117, 212, 127, 0.45);
+}
+
+.hotspot--locked {
+  border-color: rgba(232, 109, 109, 0.55);
+  background: rgba(232, 109, 109, 0.12);
+}
+
+.hotspot--locked:hover,
+.hotspot--locked:focus-visible {
+  box-shadow:
+    0 0 0 2px rgba(232, 109, 109, 0.35),
+    0 0 18px rgba(232, 109, 109, 0.3);
+}
+
+.hotspot--shake {
+  animation: hotspotShake 320ms linear;
+}
+
+@keyframes hotspotShake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .viewport-notes {

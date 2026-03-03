@@ -1,19 +1,34 @@
-import { areRequirementsMet } from '../application/requirements.js';
+import { getHotspotLockState } from '../application/hotspot-lock-state.js';
 import { routeToHref } from '../content/route-hrefs.js';
 
-function renderHotspots({ route, state }) {
+function renderHotspots({ route, state, lockedHotspotId }) {
   return route.hotspots
-    .filter((hotspot) => areRequirementsMet(state, hotspot.requires))
     .map(
-      (hotspot) => `
+      (hotspot) => {
+        const lockState = getHotspotLockState({ state, hotspot });
+        const classes = [
+          'hotspot',
+          `hotspot--${hotspot.kind ?? 'generic'}`,
+          lockState.locked ? 'hotspot--locked' : 'hotspot--unlocked',
+          lockedHotspotId === hotspot.id ? 'hotspot--shake' : ''
+        ]
+          .filter(Boolean)
+          .join(' ');
+
+        return `
         <button
-          class="hotspot"
+          class="${classes}"
           data-hotspot-id="${hotspot.id}"
+          data-hotspot-kind="${hotspot.kind ?? 'generic'}"
+          data-hotspot-locked="${lockState.locked ? 'true' : 'false'}"
+          data-hotspot-label="${hotspot.label}"
           aria-label="${hotspot.label}"
+          aria-disabled="${lockState.locked ? 'true' : 'false'}"
           title="${hotspot.label}"
           style="left:${hotspot.x}%;top:${hotspot.y}%;width:${hotspot.width}%;height:${hotspot.height}%;"
         ></button>
-      `
+      `;
+      }
     )
     .join('');
 }
@@ -129,7 +144,8 @@ export function renderApp({
   statusMessage,
   puzzleStatus,
   contactStatus,
-  isMuted
+  isMuted,
+  lockedHotspotId
 }) {
   const activeEncounter = Boolean(state.encounter.activeId);
 
@@ -163,7 +179,7 @@ export function renderApp({
         <article class="viewport-wrap">
           <div class="viewport" data-viewport>
             <img class="room-image" src="${route.heroImage}" alt="${route.title} environment" />
-            ${renderHotspots({ route, state })}
+            ${renderHotspots({ route, state, lockedHotspotId })}
             ${
               activeEncounter
                 ? `<img class="encounter" src="${encounterFrameSrc}" alt="active encounter target" />`

@@ -27,6 +27,7 @@ export const ROUTES = {
       {
         id: 'pickup_weapon',
         label: 'Pick Up Emergency Sidearm',
+        kind: 'pickup',
         x: 46,
         y: 64,
         width: 12,
@@ -40,11 +41,13 @@ export const ROUTES = {
       {
         id: 'door_to_archive',
         label: 'Access Archive Wing',
+        kind: 'door',
         x: 82,
         y: 30,
         width: 14,
         height: 45,
         requires: [{ type: 'progress', key: 'introEncounterComplete', equals: true }],
+        lockedMessage: 'Door is locked. Neutralize the active threat first.',
         effects: [{ type: 'navigate', to: '/archive' }]
       }
     ]
@@ -73,6 +76,7 @@ export const ROUTES = {
       {
         id: 'read_terminal_clue',
         label: 'Read Terminal Memo',
+        kind: 'terminal',
         x: 55,
         y: 40,
         width: 20,
@@ -161,6 +165,7 @@ export const ROUTES = {
       {
         id: 'devlog_clue_hint',
         label: 'Review Red String Note',
+        kind: 'document',
         x: 35,
         y: 20,
         width: 16,

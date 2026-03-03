@@ -2,6 +2,10 @@
 
 This repo now includes a modular, headless-core implementation foundation designed for rapid frontend redesigns.
 
+Prime mandate:
+- The five required assignment pages are implemented as in-world locations in one connected first-person experience.
+- Navigation should read as world travel (map/doors/transit), not detached website sections.
+
 ## Run
 
 ```bash
@@ -66,8 +70,8 @@ See `MVP-SPEC.md` for the full delivery contract.
 
 ## Pages
 
-- `index.html` (Home)
-- `archive.html` (About Us)
-- `armory.html` (Services)
-- `comms.html` (Contact Us)
-- `devlog.html` (Blog)
+- `index.html` (Home / Safehouse location)
+- `archive.html` (About Us / Archive location)
+- `armory.html` (Services / Armory location)
+- `comms.html` (Contact Us / Comms location)
+- `devlog.html` (Blog / Evidence Board location)

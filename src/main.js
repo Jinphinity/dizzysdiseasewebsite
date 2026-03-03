@@ -4,7 +4,7 @@ import { createAudio } from './application/create-audio.js';
 import { createContactService } from './application/create-contact-service.js';
 import { createGameEngine } from './application/create-game-engine.js';
 import { executeHotspotEffects } from './application/execute-hotspot-effects.js';
-import { areRequirementsMet } from './application/requirements.js';
+import { getHotspotLockState } from './application/hotspot-lock-state.js';
 import { resolveEncounterShot } from './application/resolve-encounter-shot.js';
 import { getEncounter } from './content/encounters.js';
 import { getMerchantItem, MERCHANT_CATALOG } from './content/merchant-catalog.js';
@@ -35,6 +35,8 @@ async function bootstrap() {
   let statusMessage = 'Mission online. Inspect environment and proceed.';
   let puzzleStatus = null;
   let contactStatus = null;
+  let lockedHotspotId = null;
+  let lockedHotspotTimer = null;
   let frameIndex = 0;
   let lastFrameAt = 0;
 
@@ -68,7 +70,8 @@ async function bootstrap() {
       statusMessage,
       puzzleStatus,
       contactStatus,
-      isMuted: audio.isMuted()
+      isMuted: audio.isMuted(),
+      lockedHotspotId
     });
   }
 
@@ -193,12 +196,23 @@ async function bootstrap() {
         return;
       }
 
-      if (!areRequirementsMet(engine.getState(), hotspot.requires)) {
-        statusMessage = 'This interaction is locked. Complete current objective first.';
+      const lockState = getHotspotLockState({ state: engine.getState(), hotspot });
+      if (lockState.locked) {
+        statusMessage = lockState.message;
+        lockedHotspotId = hotspot.id;
+        if (lockedHotspotTimer) {
+          window.clearTimeout(lockedHotspotTimer);
+        }
+        lockedHotspotTimer = window.setTimeout(() => {
+          lockedHotspotId = null;
+          render();
+        }, 380);
+        audio.play('miss');
         render();
         return;
       }
 
+      lockedHotspotId = null;
       const effectResult = executeHotspotEffects({ engine, effects: hotspot.effects });
       analytics.track('hotspot_click', { route: routePath, hotspotId });
       statusMessage = `Interaction complete: ${hotspot.label}.`;

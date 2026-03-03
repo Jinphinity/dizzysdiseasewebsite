@@ -70,6 +70,16 @@ For fastest assignment completion, use these locked defaults:
 4. Analytics: Cloudflare Web Analytics (fallback GA4 only if blocked)
 5. Visual format: pre-rendered room stills + sprite-sequence encounter overlays
 6. Copy strategy: explicit hospitality terminology on all required pages for grading safety
+7. Prime mandate: all required pages must feel like in-world locations connected by diegetic travel (map/doors), not separate website sections
+
+---
+
+## 0.4 Prime Mandate Clarification (2026-03-03)
+
+- Home, Archive, Armory, Comms, and Devlog are **locations inside one game world**.
+- Routing/pages exist for assignment compliance and direct links, but presentation must stay location-first.
+- Preferred movement model: first-person viewport + map/door/travel interaction to move between locations.
+- Any UI copy that reads like detached marketing tabs should be treated as a design bug.
 
 ---
 
@@ -197,6 +207,7 @@ DizzysDiseaseWebsite/
 Each route = one explorable **room**. No WASD. Pure mouse. Point-and-click to interact with everything.
 
 The app uses a **single persistent shell feel** (smooth room swaps and persistent HUD), while still exposing route-level navigation for assignment and shareable links.
+Primary navigation should be framed as **in-world travel** (map panel / door hotspots), not a normal website menu experience.
 
 ```
 /            → Safehouse     (Home — tutorial encounter)
