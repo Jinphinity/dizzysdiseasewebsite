@@ -1,5 +1,9 @@
 Marketing Website Game Idea
 
+Execution note (2026-03-03):
+- This file is ideation only.
+- Authoritative implementation source is `MVP-SPEC.md`.
+
 Need to at the very least adhere to the owned media assignment instructions outlined in ownedmedia-assignment.md
 
 Perhaps can have like a point and click indie survival horror adventure game for the marketing? like a meta game or whatever, like how you have those games that you go through reddit, youtube, tiktok, other socials and other owned media to decipher puzzles and stuff - can download files and do stuff
@@ -62,4 +66,3 @@ I want this to involve like soon to be not future but modern things like 3D prin
 - viral printing? 
 
 Perhaps just need to get the minimum required for the assignment done, but in a way where we establish the core architecture for everything above, so we can get the assignment done, but also have a foundation for the game to be built on and expand upon without a re-write
-

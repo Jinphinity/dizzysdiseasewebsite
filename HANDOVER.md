@@ -53,6 +53,26 @@ This section supersedes older notes where they conflict.
 
 ---
 
+## 0.2 Canonical Build Spec (2026-03-03)
+
+- Implementation should now follow [`MVP-SPEC.md`](MVP-SPEC.md) as the primary execution document.
+- `HANDOVER.md` remains historical context + rationale; `MVP-SPEC.md` is the build contract.
+
+---
+
+## 0.3 Submission Lock (2026-03-03)
+
+For fastest assignment completion, use these locked defaults:
+
+1. Build stack: Vite + vanilla JS
+2. Hosting: GitHub Pages
+3. Contact form: Formspree
+4. Analytics: Cloudflare Web Analytics (fallback GA4 only if blocked)
+5. Visual format: pre-rendered room stills + sprite-sequence encounter overlays
+6. Copy strategy: explicit hospitality terminology on all required pages for grading safety
+
+---
+
 ## 1. What This Project Is
 
 ### The Assignment (Hard Requirement)
@@ -74,6 +94,8 @@ The assignment is the skeleton. What we're building is a **playable marketing ga
 ---
 
 ## 2. The Main Game: Dizzy's Disease (UE5)
+
+Note: this section is lore/context from the full game vision and includes systems that are intentionally out of MVP scope for the website.
 
 Game design documents are in: `C:\Users\jinph\Documents\Vault 656\07_GameDesign`
 
@@ -573,6 +595,6 @@ Research reference: `Research/ARGs-Meta-Games.md` — covers The Beast (2001), I
 - Confirmed deadline: March 9, 2026
 
 **What's next**:
-- Finalize remaining implementation choices (form provider, routing detail, animation format)
+- Implementation choices are locked in `MVP-SPEC.md`; do not reopen unless blocked.
 - Begin Sprint 1 immediately: 5-page skeleton + persistent shell + hotspot system
 - The plan file at `~/.claude/plans/spicy-roaming-charm.md` has the sprint breakdown
