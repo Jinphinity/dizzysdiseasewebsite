@@ -144,12 +144,20 @@ async function bootstrap() {
     const action = target.dataset.action;
     if (action) {
       switch (action) {
-        case 'toggle-inventory':
+        case 'toggle-inventory': {
           const overlay = document.getElementById('inventory-overlay');
-          if (overlay) {
-            overlay.classList.toggle('is-open');
-          }
+          const backdrop = document.getElementById('inventory-backdrop');
+          if (overlay) overlay.classList.toggle('is-open');
+          if (backdrop) backdrop.classList.toggle('is-open');
           return;
+        }
+        case 'toggle-terminal': {
+          const terminal = document.getElementById('retro-os-screen');
+          const viewport = document.querySelector('.viewport');
+          if (terminal) terminal.classList.toggle('is-open');
+          if (viewport) viewport.classList.toggle('is-terminal-mode');
+          return;
+        }
         case 'toggle-mute':
           audio.toggleMute();
           statusMessage = audio.isMuted() ? 'Audio muted.' : 'Audio enabled.';

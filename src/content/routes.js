@@ -75,7 +75,7 @@ export const ROUTES = {
     hotspots: [
       {
         id: 'read_terminal_clue',
-        label: 'Read Terminal Memo',
+        label: 'Access Mainframe',
         kind: 'terminal',
         x: 55,
         y: 40,
@@ -83,9 +83,8 @@ export const ROUTES = {
         height: 20,
         requires: [],
         effects: [
-          { type: 'discover_clue', clueKey: 'archiveKeyphrase', value: 'silent host' },
-          { type: 'navigate', to: '/comms' }
-        ]
+          // Handled by the backend handoff for the actual computer puzzle logic
+        ],
       }
     ]
   },

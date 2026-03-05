@@ -13,12 +13,19 @@
   - Inventory renders as an UI overlay *on top* of the current room, without changing the route or resetting the background state.
 
 ## Gameplay Mechanics
-- [ ] **Metroid Prime-Style Gun Arm**:
-  - Pre-rendered first-person gun arm that moves locally inside the viewport based on mouse position.
-  - Arm is tethered (e.g., bottom right) and has a movement limit (can't go past the middle of the screen) so the camera stays frozen but the aim tracks the cursor smoothly and realistically.
 - [ ] **Diegetic Computer Hacking (Archive/Comms)**:
   - Clicking a computer terminal pans/zooms the camera so the screen fills most of the viewport.
   - Within the screen, simulate a functional retro OS for puzzles, reading logs, and hacking sequences.
+- [ ] **Metroid Prime-Style Gun Arm**:
+  - Pre-rendered first-person gun arm that moves locally inside the viewport based on mouse position.
+  - Arm is tethered (e.g., bottom right) and has a movement limit.
+- [ ] **Radio Frequency Tuning**:
+  - A tactile, diegetic radio interface where players can dial frequencies to intercept lore broadcasts or solve audio puzzles.
+- [ ] **3D Workbench / Gun Customization**:
+  - A seamless 3D (or pseudo-3D layered) workbench where players can inspect, clean, and modularly customize weapon attachments.
+- [ ] **Lab Equipment & DNA Splicing**:
+  - Microscope minigames for analyzing mutant blood samples to discover clues.
+  - A DNA splicing puzzle interface required to synthesize antivenoms or progress the narrative.
 
 ## Encounter Animation Polish (FMV System)
 - [ ] **Full Motion Video (FMV) Encounters**:

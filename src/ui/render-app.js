@@ -22,6 +22,7 @@ function renderHotspots({ route, state, lockedHotspotId }) {
       return `
         <button
           class="${classes}"
+          ${hotspot.kind === 'terminal' ? 'data-action="toggle-terminal"' : ''}
           data-hotspot-id="${hotspot.id}"
           data-hotspot-kind="${hotspot.kind ?? 'generic'}"
           data-hotspot-locked="${lockState.locked ? 'true' : 'false'}"
@@ -235,6 +236,9 @@ export function renderApp({
             <p class="inworld-log">${statusMessage ?? 'Awaiting interaction...'}</p>
           </div>
 
+          <!-- The Backdrop is required for the full-screen blur -->
+          <div class="inventory-backdrop" id="inventory-backdrop"></div>
+
           <!-- Inventory Overlay (Diegetic UI) -->
           <div class="inventory-overlay-container" id="inventory-overlay">
             <div class="inventory-header">
@@ -254,6 +258,25 @@ export function renderApp({
               <div class="inventory-slot"></div>
             </div>
             <p style="margin-top: 1rem; color: var(--muted);">Select an item to inspect or equip.</p>
+          </div>
+
+          <!-- Retro OS Hacking Simulator (Computer Terminal) -->
+          <div class="retro-os-container" id="retro-os-screen">
+            <div class="retro-os-screen">
+              <div class="retro-os-header">
+                <span>Dizzy's Disease Archival OS v2.1.4</span>
+                <span>ROOT ACCESS: REQUIRED</span>
+              </div>
+              <div class="retro-os-content">
+                <p>> System boot successful.</p>
+                <p>> Attempting to connect to mainframe... <span style="color:red;">FAILED</span></p>
+                <p>> Manual override required for security bypass.</p>
+                <p>> Enter decryption sequence:</p>
+                <p>  [ _ _ _ _ _ _ ] <span class="retro-blink"> </span></p>
+              </div>
+              <!-- This button acts as a backend trigger, currently just closes the visual -->
+              <button class="retro-os-close-btn" data-action="toggle-terminal">Disconnect</button>
+            </div>
           </div>
 
         </div>
