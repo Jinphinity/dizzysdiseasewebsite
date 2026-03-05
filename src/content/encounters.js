@@ -6,15 +6,13 @@ export const ENCOUNTERS = {
     loop: true,
     designWidth: 1000,
     designHeight: 600,
+    // TODO: Replace with FMV <video> system per TODO.md.
+    // For now, use the single generated zombie frame as a static overlay.
     frames: [
-      '/assets/enemies/intro_zombie_01.svg',
-      '/assets/enemies/intro_zombie_02.svg',
-      '/assets/enemies/intro_zombie_03.svg'
+      '/assets/encounters/intro_zombie/frame_0001.png'
     ],
     hitboxTimeline: [
-      { startFrame: 0, endFrame: 0, rect: [430, 150, 150, 300], multiplier: 1.0 },
-      { startFrame: 1, endFrame: 1, rect: [410, 130, 180, 330], multiplier: 1.1 },
-      { startFrame: 2, endFrame: 2, rect: [390, 120, 210, 350], multiplier: 1.2 }
+      { startFrame: 0, endFrame: 0, rect: [430, 150, 150, 300], multiplier: 1.0 }
     ],
     stats: {
       hp: 100,

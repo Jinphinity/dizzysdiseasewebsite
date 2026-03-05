@@ -1,4 +1,5 @@
 import { createDefaultState } from '../../core/state/create-default-state.js';
+import { migrateState } from '../../core/state/migrate-state.js';
 
 const STORAGE_KEY = 'dd_mvp_save_v1';
 
@@ -16,30 +17,17 @@ export class LocalProfileRepository {
 
     try {
       const parsed = JSON.parse(raw);
-      return {
-        ...createDefaultState(),
+      const defaults = createDefaultState();
+      const merged = {
+        ...defaults,
         ...parsed,
-        progress: {
-          ...createDefaultState().progress,
-          ...parsed.progress
-        },
-        player: {
-          ...createDefaultState().player,
-          ...parsed.player
-        },
-        clues: {
-          ...createDefaultState().clues,
-          ...parsed.clues
-        },
-        encounter: {
-          ...createDefaultState().encounter,
-          ...parsed.encounter
-        },
-        meta: {
-          ...createDefaultState().meta,
-          ...parsed.meta
-        }
+        progress: { ...defaults.progress, ...parsed.progress },
+        player: { ...defaults.player, ...parsed.player },
+        clues: { ...defaults.clues, ...parsed.clues },
+        encounter: { ...defaults.encounter, ...parsed.encounter },
+        meta: { ...defaults.meta, ...parsed.meta }
       };
+      return migrateState(merged);
     } catch {
       return null;
     }

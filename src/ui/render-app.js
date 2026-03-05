@@ -1,5 +1,6 @@
 import { getHotspotLockState } from '../application/hotspot-lock-state.js';
 import { routeToHref } from '../content/route-hrefs.js';
+import { getMerchantItem } from '../content/merchant-catalog.js';
 
 function renderHotspots({ route, state, lockedHotspotId }) {
   return route.hotspots
@@ -137,6 +138,18 @@ function renderBlog(route) {
   `;
 }
 
+function renderInventorySlots(inventory) {
+  const MIN_SLOTS = 8;
+  const filledSlots = inventory.map((itemId) => {
+    const item = getMerchantItem(itemId);
+    const label = item ? item.name : itemId;
+    return `<div class="inventory-slot" data-item-id="${itemId}" title="${label}">${label}</div>`;
+  });
+  const emptyCount = Math.max(0, MIN_SLOTS - filledSlots.length);
+  const emptySlots = Array.from({ length: emptyCount }, () => '<div class="inventory-slot"></div>');
+  return filledSlots.concat(emptySlots).join('');
+}
+
 function renderRouteIntel(route) {
   return `
     <section class="panel route-intel">
@@ -247,17 +260,9 @@ export function renderApp({
             </div>
             <p><strong>Loot Recovered:</strong> ${state.player.loot}</p>
             <div class="inventory-grid">
-              <!-- Placeholder slots for aesthetic handoff -->
-              <div class="inventory-slot"></div>
-              <div class="inventory-slot"></div>
-              <div class="inventory-slot"></div>
-              <div class="inventory-slot"></div>
-              <div class="inventory-slot"></div>
-              <div class="inventory-slot"></div>
-              <div class="inventory-slot"></div>
-              <div class="inventory-slot"></div>
+              ${renderInventorySlots(state.player.inventory)}
             </div>
-            <p style="margin-top: 1rem; color: var(--muted);">Select an item to inspect or equip.</p>
+            <p style="margin-top: 1rem; color: var(--muted);">${state.player.inventory.length ? 'Click an item to inspect.' : 'Inventory empty. Scavenge or buy supplies.'}</p>
           </div>
 
           <!-- Retro OS Hacking Simulator (Computer Terminal) -->

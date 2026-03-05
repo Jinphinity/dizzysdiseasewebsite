@@ -1,3 +1,6 @@
+import { buyItem as executeBuy, sellItem as executeSell } from '../economy/merchant.js';
+import { attemptTerminalUnlock as executeTerminalUnlock } from '../puzzle/terminal-unlock.js';
+
 export function gameReducer(state, action) {
   switch (action.type) {
     case 'WEAPON_PICKED_UP': {
@@ -109,6 +112,21 @@ export function gameReducer(state, action) {
           lastSeenRoute: action.payload?.route ?? state.meta.lastSeenRoute
         }
       };
+    }
+
+    case 'BUY_ITEM': {
+      const result = executeBuy({ state, item: action.payload?.item });
+      return result.ok ? result.state : state;
+    }
+
+    case 'SELL_ITEM': {
+      const result = executeSell({ state, item: action.payload?.item });
+      return result.ok ? result.state : state;
+    }
+
+    case 'ATTEMPT_TERMINAL_UNLOCK': {
+      const result = executeTerminalUnlock(state, action.payload?.input);
+      return result.unlocked ? result.state : state;
     }
 
     default:

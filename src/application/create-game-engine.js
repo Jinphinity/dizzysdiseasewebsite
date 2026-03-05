@@ -1,5 +1,3 @@
-import { buyItem as buyFromMerchant, sellItem as sellToMerchant } from '../core/economy/merchant.js';
-import { attemptTerminalUnlock } from '../core/puzzle/terminal-unlock.js';
 import { createDefaultState } from '../core/state/create-default-state.js';
 import { gameReducer } from '../core/state/game-reducer.js';
 
@@ -23,6 +21,7 @@ export async function createGameEngine({ repository = createNoopRepository() } =
   }
 
   function dispatch(action) {
+    const prev = state;
     state = gameReducer(state, action);
     persist();
     return state;
@@ -56,30 +55,28 @@ export async function createGameEngine({ repository = createNoopRepository() } =
     },
 
     attemptTerminalUnlock(input) {
-      const result = attemptTerminalUnlock(state, input);
-      if (result.unlocked) {
-        state = result.state;
-        persist();
-      }
-      return result;
+      const prev = state;
+      dispatch({ type: 'ATTEMPT_TERMINAL_UNLOCK', payload: { input } });
+      const unlocked = state.progress.terminalUnlocked && !prev.progress.terminalUnlocked;
+      return {
+        unlocked,
+        reason: unlocked ? undefined : (state.clues?.archiveKeyphrase ? 'INCORRECT' : 'MISSING_CLUE'),
+        state
+      };
     },
 
     buyItem(item) {
-      const result = buyFromMerchant({ state, item });
-      if (result.ok) {
-        state = result.state;
-        persist();
-      }
-      return result;
+      const prevLoot = state.player.loot;
+      dispatch({ type: 'BUY_ITEM', payload: { item } });
+      const ok = state.player.loot < prevLoot;
+      return { ok, error: ok ? undefined : 'INSUFFICIENT_LOOT', state };
     },
 
     sellItem(item) {
-      const result = sellToMerchant({ state, item });
-      if (result.ok) {
-        state = result.state;
-        persist();
-      }
-      return result;
+      const prevLoot = state.player.loot;
+      dispatch({ type: 'SELL_ITEM', payload: { item } });
+      const ok = state.player.loot > prevLoot;
+      return { ok, error: ok ? undefined : 'ITEM_NOT_OWNED', state };
     }
   };
 }

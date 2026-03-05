@@ -83,7 +83,7 @@ export const ROUTES = {
         height: 20,
         requires: [],
         effects: [
-          // Handled by the backend handoff for the actual computer puzzle logic
+          { type: 'discover_clue', clueKey: 'archiveKeyphrase', value: 'silent host' }
         ],
       }
     ]

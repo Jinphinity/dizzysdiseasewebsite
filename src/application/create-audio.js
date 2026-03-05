@@ -1,6 +1,7 @@
 export function createAudio() {
   let muted = false;
   let context = null;
+  let ambientSource = null;
 
   function ensureContext() {
     if (!context) {
@@ -33,6 +34,11 @@ export function createAudio() {
     oscillator.connect(gainNode);
     gainNode.connect(ctx.destination);
 
+    oscillator.onended = () => {
+      oscillator.disconnect();
+      gainNode.disconnect();
+    };
+
     oscillator.start();
     oscillator.stop(ctx.currentTime + durationMs / 1000);
   }
@@ -54,11 +60,27 @@ export function createAudio() {
           break;
       }
     },
+    // Stub for route-based ambient audio loops. Backend team: connect to real audio files.
+    playAmbient(routePath) {
+      // TODO: Load and loop an ambient audio file based on route.
+      // e.g. /assets/audio/amb_safehouse.ogg for '/'
+      void routePath;
+    },
+    stopAmbient() {
+      if (ambientSource) {
+        ambientSource.stop();
+        ambientSource = null;
+      }
+    },
     isMuted() {
       return muted;
     },
     toggleMute() {
       muted = !muted;
+      if (muted && ambientSource) {
+        ambientSource.stop();
+        ambientSource = null;
+      }
       return muted;
     }
   };

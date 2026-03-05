@@ -3,15 +3,16 @@ import { createAnalytics } from './application/create-analytics.js';
 import { createAudio } from './application/create-audio.js';
 import { createContactService } from './application/create-contact-service.js';
 import { createGameEngine } from './application/create-game-engine.js';
-import { executeHotspotEffects } from './application/execute-hotspot-effects.js';
-import { getHotspotLockState } from './application/hotspot-lock-state.js';
 import { resolveEncounterShot } from './application/resolve-encounter-shot.js';
 import { getEncounter } from './content/encounters.js';
-import { getMerchantItem, MERCHANT_CATALOG } from './content/merchant-catalog.js';
+import { MERCHANT_CATALOG } from './content/merchant-catalog.js';
 import { ROUTE_ORDER, getRoute } from './content/routes.js';
 import { hrefToRoute, routeToHref } from './content/route-hrefs.js';
 import './styles/base.css';
 import { renderApp } from './ui/render-app.js';
+import { handleAction } from './ui/handle-action.js';
+import { handleHotspotClick } from './ui/handle-hotspot.js';
+import { handleFormSubmit } from './ui/handle-form.js';
 
 function getRouteFromLocation() {
   const explicit = document.body.dataset.initialRoute;
@@ -135,115 +136,56 @@ async function bootstrap() {
     render();
   }
 
+  // --- Click Delegation ---
   app.addEventListener('click', (event) => {
     const target = event.target.closest('[data-hotspot-id], [data-action], [data-viewport]');
     if (!target) {
       return;
     }
 
+    // 1. Action buttons
     const action = target.dataset.action;
     if (action) {
-      switch (action) {
-        case 'toggle-inventory': {
-          const overlay = document.getElementById('inventory-overlay');
-          const backdrop = document.getElementById('inventory-backdrop');
-          if (overlay) overlay.classList.toggle('is-open');
-          if (backdrop) backdrop.classList.toggle('is-open');
-          return;
-        }
-        case 'toggle-terminal': {
-          const terminal = document.getElementById('retro-os-screen');
-          const viewport = document.querySelector('.viewport');
-          if (terminal) terminal.classList.toggle('is-open');
-          if (viewport) viewport.classList.toggle('is-terminal-mode');
-          return;
-        }
-        case 'toggle-mute':
-          audio.toggleMute();
-          statusMessage = audio.isMuted() ? 'Audio muted.' : 'Audio enabled.';
-          render();
-          return;
-        case 'reset-save':
-          window.localStorage.clear();
-          window.location.reload();
-          return;
-        case 'buy': {
-          const item = getMerchantItem(target.dataset.itemId);
-          if (!item) {
-            return;
-          }
-          const result = engine.buyItem(item);
-          if (result.ok) {
-            analytics.track('merchant_buy', { itemId: item.id, cost: item.cost });
-            statusMessage = `Purchased ${item.name} for ${item.cost} loot.`;
-          } else {
-            statusMessage = 'Purchase failed: insufficient loot.';
-          }
-          render();
-          return;
-        }
-        case 'sell': {
-          const item = getMerchantItem(target.dataset.itemId);
-          if (!item) {
-            return;
-          }
-          const result = engine.sellItem(item);
-          if (result.ok) {
-            analytics.track('merchant_sell', { itemId: item.id, sell: item.sell });
-            statusMessage = `Sold ${item.name} for ${item.sell} loot.`;
-          } else {
-            statusMessage = 'Sell failed: item not in inventory.';
-          }
-          render();
-          return;
-        }
-        default:
-          return;
+      const result = handleAction({ action, target, engine, audio, analytics, routePath });
+      if (result.handled) {
+        if (result.statusMessage) statusMessage = result.statusMessage;
+        if (result.needsRender) render();
+        return;
       }
     }
 
+    // 2. Hotspot buttons
     const hotspotId = target.dataset.hotspotId;
     if (hotspotId) {
-      const route = getRoute(routePath);
-      const hotspot = route.hotspots.find((item) => item.id === hotspotId);
-      if (!hotspot) {
-        return;
-      }
-
-      const lockState = getHotspotLockState({ state: engine.getState(), hotspot });
-      if (lockState.locked) {
-        statusMessage = lockState.message;
-        lockedHotspotId = hotspot.id;
-        if (lockedHotspotTimer) {
-          window.clearTimeout(lockedHotspotTimer);
-        }
-        lockedHotspotTimer = window.setTimeout(() => {
+      const result = handleHotspotClick({ hotspotId, routePath, engine, analytics, audio });
+      if (result.handled) {
+        if (result.statusMessage) statusMessage = result.statusMessage;
+        if (result.lockedHotspotId) {
+          lockedHotspotId = result.lockedHotspotId;
+          if (lockedHotspotTimer) window.clearTimeout(lockedHotspotTimer);
+          lockedHotspotTimer = window.setTimeout(() => {
+            lockedHotspotId = null;
+            render();
+          }, 380);
+        } else {
           lockedHotspotId = null;
+        }
+        if (result.redirectTo) {
+          navigate(result.redirectTo);
+        } else if (result.needsRender) {
           render();
-        }, 380);
-        audio.play('miss');
-        render();
+        }
         return;
       }
-
-      lockedHotspotId = null;
-      const effectResult = executeHotspotEffects({ engine, effects: hotspot.effects });
-      analytics.track('hotspot_click', { route: routePath, hotspotId });
-      statusMessage = `Interaction complete: ${hotspot.label}.`;
-
-      if (effectResult.redirectTo) {
-        navigate(effectResult.redirectTo);
-      } else {
-        render();
-      }
-      return;
     }
 
+    // 3. Viewport shots
     if (target.dataset.viewport !== undefined) {
       handleViewportShot(event);
     }
   });
 
+  // --- Form Delegation ---
   app.addEventListener('submit', async (event) => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement)) {
@@ -257,59 +199,23 @@ async function bootstrap() {
 
     event.preventDefault();
 
-    if (formType === 'terminal') {
-      const code = form.elements.code?.value ?? '';
-      const result = engine.attemptTerminalUnlock(code);
+    const result = await handleFormSubmit({
+      formType,
+      form,
+      routePath,
+      engine,
+      contactService,
+      analytics,
+      audio
+    });
 
-      if (result.unlocked) {
-        puzzleStatus = { ok: true, message: 'Terminal unlocked. Bonus operations content enabled.' };
-        statusMessage = 'Puzzle solved using archive intelligence.';
-        analytics.track('puzzle_unlock', { route: routePath });
-        audio.play('success');
-      } else {
-        puzzleStatus = { ok: false, message: 'Incorrect keyphrase. Search archive logs for the access term.' };
-        statusMessage = 'Terminal remains locked.';
-        analytics.track('puzzle_attempt_failed', { route: routePath, reason: result.reason });
-        audio.play('miss');
-      }
-
-      render();
-      return;
-    }
-
-    if (formType === 'contact') {
-      const route = getRoute(routePath);
-      const payload = {
-        name: form.elements.name?.value ?? '',
-        email: form.elements.email?.value ?? '',
-        message: form.elements.message?.value ?? '',
-        route: routePath
-      };
-
-      const result = await contactService.submit({
-        endpoint: route.contact?.formEndpoint,
-        payload
-      });
-
-      contactStatus = {
-        ok: result.ok,
-        message: result.message
-      };
-
-      if (result.ok) {
-        analytics.track('contact_submit', { route: routePath, mode: result.mode });
-        statusMessage = 'Contact transmission processed.';
-        audio.play('success');
-        form.reset();
-      } else {
-        statusMessage = 'Contact transmission failed.';
-        audio.play('miss');
-      }
-
-      render();
-    }
+    if (result.statusMessage) statusMessage = result.statusMessage;
+    if (result.puzzleStatus) puzzleStatus = result.puzzleStatus;
+    if (result.contactStatus) contactStatus = result.contactStatus;
+    if (result.needsRender) render();
   });
 
+  // --- Animation Loop ---
   function animationLoop(timestamp) {
     const state = engine.getState();
     if (state.encounter.activeId) {
