@@ -64,6 +64,29 @@ export function handleAction({ action, target, engine, audio, analytics, routePa
             return { handled: true, statusMessage: 'Sell failed: item not in inventory.', needsRender: true };
         }
 
+        case 'tune-radio': {
+            const freq = parseFloat(target.dataset.frequency);
+            if (isNaN(freq)) return { handled: true, statusMessage: null, needsRender: false };
+            engine.dispatch({ type: 'RADIO_TUNED', payload: { frequency: freq } });
+            return { handled: true, statusMessage: `Frequency set to ${freq.toFixed(1)} MHz`, needsRender: true };
+        }
+
+        case 'equip-part': {
+            const partId = target.dataset.partId;
+            engine.dispatch({ type: 'WORKBENCH_PART_EQUIPPED', payload: { partId } });
+            return { handled: true, statusMessage: 'Weapon component updated.', needsRender: true };
+        }
+
+        case 'clean-weapon': {
+            engine.dispatch({ type: 'WORKBENCH_CLEAN_WEAPON' });
+            return { handled: true, statusMessage: 'Weapon maintained and cleaned.', needsRender: true };
+        }
+
+        case 'disassemble-weapon': {
+            engine.dispatch({ type: 'WORKBENCH_DISASSEMBLE' });
+            return { handled: true, statusMessage: 'Weapon stripped to base components.', needsRender: true };
+        }
+
         default:
             return { handled: false, statusMessage: null, needsRender: false };
     }

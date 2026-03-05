@@ -21,6 +21,21 @@ export function executeHotspotEffects({ engine, effects = [] }) {
           payload: { amount: effect.amount ?? 0 }
         });
         break;
+      case 'start_fmv_encounter':
+        engine.dispatch({
+          type: 'FMV_ENCOUNTER_STARTED',
+          payload: { encounterId: effect.encounterId, shootWindowStart: effect.shootWindowStart, shootWindowEnd: effect.shootWindowEnd }
+        });
+        break;
+      case 'open_radio':
+        engine.dispatch({ type: 'RADIO_OPENED' });
+        break;
+      case 'open_workbench':
+        engine.dispatch({ type: 'WORKBENCH_OPENED' });
+        break;
+      case 'open_lab':
+        engine.dispatch({ type: 'LAB_OPENED', payload: { puzzleType: effect.puzzleType } });
+        break;
       case 'navigate':
         redirectTo = effect.to;
         break;
