@@ -3,19 +3,18 @@ import { routeToHref } from '../content/route-hrefs.js';
 
 function renderHotspots({ route, state, lockedHotspotId }) {
   return route.hotspots
-    .map(
-      (hotspot) => {
-        const lockState = getHotspotLockState({ state, hotspot });
-        const classes = [
-          'hotspot',
-          `hotspot--${hotspot.kind ?? 'generic'}`,
-          lockState.locked ? 'hotspot--locked' : 'hotspot--unlocked',
-          lockedHotspotId === hotspot.id ? 'hotspot--shake' : ''
-        ]
-          .filter(Boolean)
-          .join(' ');
+    .map((hotspot) => {
+      const lockState = getHotspotLockState({ state, hotspot });
+      const classes = [
+        'hotspot',
+        `hotspot--${hotspot.kind ?? 'generic'}`,
+        lockState.locked ? 'hotspot--locked' : 'hotspot--unlocked',
+        lockedHotspotId === hotspot.id ? 'hotspot--shake' : ''
+      ]
+        .filter(Boolean)
+        .join(' ');
 
-        return `
+      return `
         <button
           class="${classes}"
           data-hotspot-id="${hotspot.id}"
@@ -23,19 +22,17 @@ function renderHotspots({ route, state, lockedHotspotId }) {
           data-hotspot-locked="${lockState.locked ? 'true' : 'false'}"
           data-hotspot-label="${hotspot.label}"
           aria-label="${hotspot.label}"
-          aria-disabled="${lockState.locked ? 'true' : 'false'}"
           title="${hotspot.label}"
           style="left:${hotspot.x}%;top:${hotspot.y}%;width:${hotspot.width}%;height:${hotspot.height}%;"
         ></button>
       `;
-      }
-    )
+    })
     .join('');
 }
 
 function renderMerchant({ catalog, state }) {
   return `
-    <section class="panel merchant">
+    <section class="panel panel--interactive merchant">
       <h3>Service Marketplace</h3>
       <p>Buy or sell operational tools using recovered loot currency.</p>
       <ul class="merchant-list">
@@ -69,7 +66,7 @@ function renderContact({ route, contactStatus }) {
       : '';
 
   return `
-    <section class="panel contact">
+    <section class="panel panel--interactive contact">
       <h3>Contact Operations</h3>
       <p><strong>Phone:</strong> ${route.contact.phone}</p>
       <p><strong>Email:</strong> ${route.contact.email}</p>
@@ -100,7 +97,7 @@ function renderTerminal({ state, puzzleStatus }) {
     : '';
 
   return `
-    <section class="panel terminal">
+    <section class="panel panel--interactive terminal">
       <h3>Terminal Lock</h3>
       <p>Use the keyphrase found in archive records to unlock this terminal.</p>
       <form data-form="terminal">
@@ -134,6 +131,34 @@ function renderBlog(route) {
   `;
 }
 
+function renderRouteIntel(route) {
+  return `
+    <section class="panel route-intel">
+      <h3>${route.title}</h3>
+      <p>${route.subtitle ?? ''}</p>
+      ${route.infoBlocks
+        .map(
+          (block) => `
+            <article class="intel-block">
+              <h4>${block.heading}</h4>
+              <p>${block.body}</p>
+            </article>
+          `
+        )
+        .join('')}
+    </section>
+  `;
+}
+
+function renderRouteModules({ route, catalog, state, puzzleStatus, contactStatus }) {
+  return `
+    ${route.path === '/armory' ? renderMerchant({ catalog, state }) : ''}
+    ${route.path === '/comms' ? renderTerminal({ state, puzzleStatus }) : ''}
+    ${route.path === '/comms' ? renderContact({ route, contactStatus }) : ''}
+    ${route.path === '/devlog' ? renderBlog(route) : ''}
+  `;
+}
+
 export function renderApp({
   target,
   route,
@@ -153,72 +178,65 @@ export function renderApp({
     <div class="page-bg"></div>
     <main class="app-shell">
       <header class="topbar">
-        <div>
-          <h1>Dizzy's Disease: Hospitality Ops Experience</h1>
-          <p>${route.assignmentLabel} - ${route.title}</p>
+        <div class="topbar-title">
+          <h1>Dizzy's Disease Interface</h1>
+          <p>Meta navigation and system controls.</p>
         </div>
+        <nav class="top-nav" aria-label="Primary">
+          ${routeOrder
+            .map(
+              (path) => `
+                <a href="${routeToHref(path)}" class="${path === route.path ? 'active' : ''}">
+                  ${path === '/' ? 'home' : path.slice(1)}
+                </a>
+              `
+            )
+            .join('')}
+        </nav>
         <div class="topbar-actions">
           <button data-action="toggle-mute">Audio: ${isMuted ? 'Off' : 'On'}</button>
           <button data-action="reset-save">Reset Save</button>
         </div>
       </header>
 
-      <nav class="route-nav" aria-label="Primary">
-        ${routeOrder
-          .map(
-            (path) => `
-              <a href="${routeToHref(path)}" class="${path === route.path ? 'active' : ''}">${
-                path === '/' ? 'home' : path.slice(1)
-              }</a>
-            `
-          )
-          .join('')}
-      </nav>
+      <section class="game-window" aria-label="In-world game screen">
+        <div class="viewport" data-viewport data-route="${route.path}">
+          <img class="room-image" src="${route.heroImage}" alt="${route.title} environment" />
+          ${renderHotspots({ route, state, lockedHotspotId })}
+          ${
+            activeEncounter
+              ? `<img class="encounter" src="${encounterFrameSrc}" alt="active encounter target" />`
+              : ''
+          }
 
-      <section class="layout">
-        <article class="viewport-wrap">
-          <div class="viewport" data-viewport>
-            <img class="room-image" src="${route.heroImage}" alt="${route.title} environment" />
-            ${renderHotspots({ route, state, lockedHotspotId })}
-            ${
-              activeEncounter
-                ? `<img class="encounter" src="${encounterFrameSrc}" alt="active encounter target" />`
-                : ''
-            }
+          <aside class="overlay overlay-left">
+            <section class="panel stats">
+              <h3>MFD Status</h3>
+              <p>Health: ${state.player.health}</p>
+              <p>Loot: ${state.player.loot}</p>
+              <p>Weapon Equipped: ${state.progress.weaponEquipped ? 'Yes' : 'No'}</p>
+              <p>Encounter HP: ${state.encounter.hp}</p>
+              <p>Terminal: ${state.progress.terminalUnlocked ? 'Unlocked' : 'Locked'}</p>
+              <p>Inventory: ${state.player.inventory.join(', ') || 'none'}</p>
+            </section>
+          </aside>
+
+          <aside class="overlay overlay-right">
+            ${renderRouteIntel(route)}
+            ${renderRouteModules({ route, catalog, state, puzzleStatus, contactStatus })}
+          </aside>
+
+          <div class="overlay overlay-bottom" aria-live="polite">
+            <p class="inworld-log">${statusMessage ?? 'Awaiting interaction...'}</p>
           </div>
-          <div class="viewport-notes">
-            ${route.infoBlocks
-              .map(
-                (block) => `
-                  <section>
-                    <h3>${block.heading}</h3>
-                    <p>${block.body}</p>
-                  </section>
-                `
-              )
-              .join('')}
-          </div>
-        </article>
-
-        <aside class="hud">
-          <section class="panel stats">
-            <h3>MFD Status</h3>
-            <p>Health: ${state.player.health}</p>
-            <p>Loot: ${state.player.loot}</p>
-            <p>Weapon Equipped: ${state.progress.weaponEquipped ? 'Yes' : 'No'}</p>
-            <p>Encounter HP: ${state.encounter.hp}</p>
-            <p>Terminal: ${state.progress.terminalUnlocked ? 'Unlocked' : 'Locked'}</p>
-            <p>Inventory: ${state.player.inventory.join(', ') || 'none'}</p>
-          </section>
-
-          ${route.path === '/armory' ? renderMerchant({ catalog, state }) : ''}
-          ${route.path === '/comms' ? renderTerminal({ state, puzzleStatus }) : ''}
-          ${route.path === '/comms' ? renderContact({ route, contactStatus }) : ''}
-          ${route.path === '/devlog' ? renderBlog(route) : ''}
-        </aside>
+        </div>
       </section>
 
-      <footer class="log-bar" aria-live="polite">${statusMessage ?? 'Awaiting interaction...'}</footer>
+      <footer class="meta-footer">
+        <span>Assignment mapping: ${route.assignmentLabel}</span>
+        <span>Location node: ${route.title}</span>
+        <span>Route id: ${route.path}</span>
+      </footer>
     </main>
   `;
 }
