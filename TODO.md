@@ -26,6 +26,9 @@
 - [ ] **Lab Equipment & DNA Splicing**:
   - Microscope minigames for analyzing mutant blood samples to discover clues.
   - A DNA splicing puzzle interface required to synthesize antivenoms or progress the narrative.
+- [ ] **Universal Modular/Procedural Puzzle System**:
+  - Research and design a modular framework for puzzles so they can be procedurally generated or easily created by designers using existing systems.
+  - Ensure systems like Terminal, DNA Splicing, and Radio are universal and parameter-driven.
 
 ## Encounter Animation Polish (FMV System)
 - [ ] **Full Motion Video (FMV) Encounters**:
