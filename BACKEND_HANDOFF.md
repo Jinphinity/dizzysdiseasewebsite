@@ -1,6 +1,6 @@
 # Dizzy's Disease: Backend & Systems Handoff
 
-This document separates the frontend/aesthetic implementation responsibilities from the deep backend and complex state-machine systems logic. 
+This document separates the frontend/aesthetic implementation responsibilities from the deep backend and complex state-machine systems logic.
 
 **Note to Backend Engineers:** The Frontend (Visual/UI) team has established a highly constrained, aesthetic-heavy baseline to market the survival horror game *Dizzy's Disease*. Your goal is to connect these visual systems to functional logic *without* breaking the CSS layout, DOM structure, or the immersive survival horror tone.
 
@@ -8,59 +8,106 @@ This document separates the frontend/aesthetic implementation responsibilities f
 
 ## 1. Full Motion Video (FMV) Encounter System
 
-**Current Frontend State:** 
-- The UI handles a basic "encounter" overlay state (a black screen placeholder or an overlay div). 
-- We have scoped out the aesthetic transition (Approach, Kill, Death).
+**Backend Module:** `src/core/encounter/fmv-encounter.js`
 
-**Backend Handoff Requirements:**
-- Implement the HTML5 `<video>` swapping logic that seamlessly transitions between the three states.
-- The player must have a "window of opportunity" to click/shoot the zombie.
-- **State Logic Needed**:
-  - `start_fmv_encounter(zombie_id)`
-  - Handle hit detection (click event on the video/viewport during the active frame window).
-  - Preload the "Kill" and "Death" videos to prevent buffering when the swap occurs.
-  - Dispatch events (e.g. `encounter_won`, `encounter_lost`) back to the UI to trigger the loot summary or game over screen.
+**Current State:** Fully implemented state machine with IDLE → APPROACH → KILL/DEATH lifecycle. The system manages timing-based shoot windows and phase transitions.
 
-## 2. Inventory & State Persistence
+**Frontend Integration Needed:**
+- Wire `<video>` element creation/swapping to the phase change callback.
+- Bind viewport clicks to `attemptShot(currentVideoTime)`.
+- Bind video `timeupdate` events to `onVideoTimeUpdate()`.
+- Show "You Died" screen on DEATH phase, loot summary on KILL phase.
 
-**Current Frontend State:** 
-- The UI renders an "Inventory Overlay" that slides out over the game.
-- We have CSS for slots, loot currency counters, and item descriptions.
+## 2. Gun Arm Tracking (Metroid Prime Style)
 
-**Backend Handoff Requirements:**
-- Replace the mocked frontend state with a robust Inventory Manager.
-- Ensure state persistence (initially `localStorage`, then migrating to user profiles).
-- Handle edge cases: Insufficient currency, duplicate non-stackable items, inventory full states.
-- Define a strict JSON schema for items.
+**Backend Module:** `src/core/encounter/gun-arm-tracker.js`
 
-## 3. Metroid-Prime Gun Arm Control
+**Current State:** Full tracking system with lerped cursor following, anchor tethering (bottom-right), midpoint constraint, and rotation calculation.
 
-**Current Frontend State:** 
-- We will have a pre-rendered 2D gun arm image set over the viewport.
+**Frontend Integration Needed:**
+- Create a gun arm `<img>` element positioned absolutely in the viewport.
+- Bind `mousemove` on viewport to `setMousePosition()`.
+- Call `tick()` in the animation loop and apply `getTransform()` CSS values.
 
-**Backend Handoff Requirements:**
-- Write the viewport bounds tracking logic.
-- The gun arm needs to rotate or translate to track the mouse pointer smoothly (lerped).
-- Enforce constraints: The arm cannot track past the halfway point of the screen to maintain the illusion that the player is looking forward rather than turning completely around.
+## 3. Radio Frequency Tuning
 
-## 4. Retro OS Hacking Simulator (Computer Terminal)
+**Backend Module:** `src/core/puzzle/radio-tuner.js`
 
-**Current Frontend State:** 
-- The UI contains CSS terminal frames and `VT323` typefaces to display old CRT monitors.
-- We handle the CSS zoom/pan animation to enter "Terminal Mode".
+**Current State:** Full tuning system with 4 stations (Emergency Broadcast, Lab Report, Numbers Station, Survivor Channel), signal strength calculation, and clue discovery hooks.
 
-**Backend Handoff Requirements:**
-- Implement the internal simulation loop of the operating system.
-- Build the text-parser or multi-stage logic for the hacking minigame (e.g., matching codes, guessing passwords within attempts).
-- Hook the puzzle success state up to the global game progress to unlock real-world doors/lore.
+**Frontend Integration Needed:**
+- Build the radio dial UI (frequency slider or rotary knob).
+- Bind dial input to `tune(frequency)` or `nudge(delta)`.
+- Display signal strength meter and static noise proportional to `getSignalStrength()`.
+- Show station content when `getLockedStation()` returns a match.
+- Wire `discoversClue` results to the game engine's `discoverClue()` method.
 
-## 5. User Profiles & Cloud Save
+## 4. Retro OS Terminal Simulator
 
-**Current Frontend State:** 
-- Static frontend only.
+**Backend Module:** `src/core/puzzle/terminal-simulator.js`
 
-**Backend Handoff Requirements:**
-- Scaffold the Supabase/Firebase backend.
+**Current State:** Full command parser with virtual file system. Supports: HELP, LS, CAT, DECRYPT (requires signal_decoder item), UNLOCK, WHOAMI, CLEAR, EXIT. Tracks read files and puzzle completion.
+
+**Frontend Integration Needed:**
+- Replace the static retro OS content with a dynamic terminal that accepts text input.
+- Pipe user input to `executeCommand(input, playerInventory)`.
+- Render command history from `getHistory()`.
+- Handle `shouldClose` flag to trigger the disconnect animation.
+- Handle `unlocked` flag to dispatch the terminal unlock to the game engine.
+
+## 5. Microscope Sample Analysis
+
+**Backend Module:** `src/core/puzzle/microscope-analyzer.js`
+
+**Current State:** Full spatial marker analysis system with two samples, zoom levels that scale hit detection, and clue discovery on completion.
+
+**Frontend Integration Needed:**
+- Build microscope viewport UI with zoom controls.
+- Render sample slide visuals with hidden marker regions.
+- Bind clicks to `identifyMarker(clickX, clickY)`.
+- Show marker labels when found, completion animation when all markers discovered.
+- Wire `discoversClue` to the game engine.
+
+## 6. DNA Splicing Puzzle
+
+**Backend Module:** `src/core/puzzle/dna-splicing.js`
+
+**Current State:** Full puzzle system with configurable difficulty, random sequence generation, fragment pools with decoys, drag-and-drop slot placement, and attempt-limited submission.
+
+**Frontend Integration Needed:**
+- Build visual DNA strand display with target sequence indicator.
+- Render draggable fragment tiles from `getFragments()`.
+- Bind drag-to-slot to `placeFragment(slotIndex, fragmentId)`.
+- Bind submit button to `submit()`. Show result feedback.
+- Wire `discoversClue` on success to the game engine.
+
+## 7. Gun Workbench / Customization
+
+**Backend Module:** `src/core/economy/gun-workbench.js`
+
+**Current State:** Full modular customization system with 5 weapon slots, 13 parts with stat modifiers, combined stats computation with condition-based penalties, and maintenance operations (clean, degrade, disassemble).
+
+**Frontend Integration Needed:**
+- Build weapon 3D/layered view showing each modular part.
+- Build part selector panels per slot from `getPartsForSlot(slot)`.
+- Bind part selection to `equipPart(partId)`.
+- Show computed stats from `getComputedStats()`.
+- Bind clean button to `clean()`, show condition bar.
+
+## 8. Inventory & State Persistence
+
+**Current State:** Inventory overlay dynamically renders from `state.player.inventory` with item name resolution via merchant catalog. State versioning and migration pipeline implemented.
+
+**Frontend Integration Needed:**
+- Add item icons/images to inventory slots (currently text-only).
+- Add item context menu (use, drop, inspect).
+
+## 9. User Profiles & Cloud Save
+
+**Current State:** `LocalProfileRepository` handles localStorage persistence with migration support.
+
+**Backend Work Needed:**
+- Scaffold Supabase/Firebase backend.
 - Create secure authentication endpoints.
-- Allow players to "Save Game" and sync their inventory and puzzle states across devices.
-- Generate an anonymous session ID immediately so players don't need to log in to start playing the teaser.
+- Implement `CloudProfileRepository` that implements the same `load()/save()` interface.
+- Generate anonymous session ID so players can play without logging in.

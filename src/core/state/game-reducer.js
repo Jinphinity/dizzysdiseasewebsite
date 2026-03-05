@@ -129,6 +129,46 @@ export function gameReducer(state, action) {
       return result.unlocked ? result.state : state;
     }
 
+    case 'WEAPON_CONDITION_CHANGED': {
+      const condition = Number(action.payload?.condition ?? 100);
+      return {
+        ...state,
+        progress: {
+          ...state.progress,
+          weaponCondition: condition
+        }
+      };
+    }
+
+    case 'MARKER_DISCOVERED': {
+      const markerId = action.payload?.markerId;
+      if (!markerId) return state;
+      return {
+        ...state,
+        progress: {
+          ...state.progress,
+          discoveredMarkers: [...(state.progress.discoveredMarkers ?? []), markerId]
+        }
+      };
+    }
+
+    case 'RADIO_CLUE_DISCOVERED': {
+      const clueKey = action.payload?.clueKey;
+      const value = action.payload?.value;
+      if (!clueKey) return state;
+      return {
+        ...state,
+        clues: {
+          ...state.clues,
+          [clueKey]: value
+        },
+        progress: {
+          ...state.progress,
+          radioStationsFound: [...(state.progress.radioStationsFound ?? []), action.payload?.stationId]
+        }
+      };
+    }
+
     default:
       return state;
   }

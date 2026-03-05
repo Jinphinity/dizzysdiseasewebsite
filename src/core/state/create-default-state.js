@@ -4,7 +4,10 @@ export function createDefaultState() {
     progress: {
       weaponEquipped: false,
       introEncounterComplete: false,
-      terminalUnlocked: false
+      terminalUnlocked: false,
+      weaponCondition: 100,
+      discoveredMarkers: [],
+      radioStationsFound: []
     },
     player: {
       health: 100,
@@ -12,7 +15,11 @@ export function createDefaultState() {
       inventory: []
     },
     clues: {
-      archiveKeyphrase: null
+      archiveKeyphrase: null,
+      numbersSequence: null,
+      bloodSampleAnalyzed: null,
+      tissueSampleAnalyzed: null,
+      antivenomSynthesized: null
     },
     encounter: {
       activeId: null,
