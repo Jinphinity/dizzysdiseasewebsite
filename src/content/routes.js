@@ -8,7 +8,7 @@ export const ROUTES = {
     title: 'Safehouse Arrival',
     assignmentLabel: 'Home Page',
     subtitle: 'Guest safety command center for immersive hospitality operations.',
-    heroImage: '/assets/rooms/home-safehouse.svg',
+    heroImage: '/assets/rooms/home-safehouse.png',
     infoBlocks: [
       {
         heading: 'Mission',
@@ -57,7 +57,7 @@ export const ROUTES = {
     title: 'Archive Terminal',
     assignmentLabel: 'About Us',
     subtitle: 'Company history and leadership records for hospitality operations.',
-    heroImage: '/assets/rooms/archive-room.svg',
+    heroImage: '/assets/rooms/archive-room.png',
     infoBlocks: [
       {
         heading: 'History',
@@ -94,7 +94,7 @@ export const ROUTES = {
     title: 'Armory Services Desk',
     assignmentLabel: 'Services Page',
     subtitle: 'Service catalog and pricing tiers for guest support operations.',
-    heroImage: '/assets/rooms/armory-service.svg',
+    heroImage: '/assets/rooms/armory-service.png',
     infoBlocks: [
       {
         heading: 'Service Tier: Essential',
@@ -116,7 +116,7 @@ export const ROUTES = {
     title: 'Communications Hub',
     assignmentLabel: 'Contact Us Page',
     subtitle: 'Direct guest and partner communications channel.',
-    heroImage: '/assets/rooms/comms-room.svg',
+    heroImage: '/assets/rooms/comms-room.png',
     infoBlocks: [
       {
         heading: 'Inquiry Workflow',
@@ -136,7 +136,7 @@ export const ROUTES = {
     title: 'Evidence Board Devlog',
     assignmentLabel: 'Blog Page',
     subtitle: 'Hospitality industry insights and development updates.',
-    heroImage: '/assets/rooms/devlog-board.svg',
+    heroImage: '/assets/rooms/devlog-board.png',
     infoBlocks: [
       {
         heading: 'Post 1: Hospitality Through Interactive Narrative',

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Jinphinity/dizzysdiseasewebsite#readme",
   "devDependencies": {
+    "sass": "^1.97.3",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   }

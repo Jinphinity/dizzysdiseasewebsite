@@ -1,13 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=VT323&display=swap');
+
 :root {
-  --bg: #071016;
-  --panel: #101a22;
-  --panel-soft: #162430;
-  --ink: #deebf7;
-  --muted: #9ab0c5;
-  --line: #314454;
-  --accent: #75d47f;
-  --warn: #f2b94b;
-  --danger: #e86d6d;
+  /* Survival Horror Palette: Dark Pthalo Green, Dusky Greys, Blood Red */
+  --bg: #080b09;
+  --panel: #111a14;
+  --panel-soft: #19251d;
+  --paper-bg: #e2dfd3;
+  --ink: #cfdacd;
+  --ink-dark: #202b24;
+  --muted: #6e8474;
+  --line: #213527;
+  --accent: #8a0303;
+  --accent-glow: rgba(138, 3, 3, 0.6);
+  --warn: #d4a017;
+  --danger: #c20808;
+  
+  --font-typewriter: 'Special Elite', 'Courier New', Courier, monospace;
+  --font-sys: 'VT323', monospace;
 }
 
 * {
@@ -23,16 +32,34 @@ body,
 body {
   margin: 0;
   color: var(--ink);
-  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at 20% 0%, #163040 0%, var(--bg) 55%);
+  font-family: var(--font-typewriter);
+  background: radial-gradient(circle at 50% 50%, #152219 0%, var(--bg) 80%);
   overflow: hidden;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
 }
 
+/* Gritty Vignette Overlay */
 .page-bg {
   position: fixed;
   inset: 0;
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 45%);
+  background: 
+    radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.8) 100%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
   pointer-events: none;
+  z-index: 100;
+  mix-blend-mode: multiply;
+}
+
+/* Occasional CRT flicker effect */
+@keyframes flicker {
+  0% { opacity: 0.95; }
+  5% { opacity: 0.85; }
+  10% { opacity: 0.95; }
+  15% { opacity: 1; }
+  50% { opacity: 0.95; }
+  52% { opacity: 0.8; }
+  54% { opacity: 1; }
+  100% { opacity: 0.95; }
 }
 
 .app-shell {
@@ -42,64 +69,92 @@ body {
   width: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  gap: 0.32rem;
-  padding: 0.32rem;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  animation: flicker 6s infinite;
 }
 
+/* UI Panels */
 .topbar,
 .meta-footer,
 .panel,
 .inworld-log {
   border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--panel) 88%, black);
-  border-radius: 10px;
+  background: rgba(17, 26, 20, 0.85); /* Dark Pthalo Green Tint */
+  backdrop-filter: blur(4px);
+  border-radius: 2px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 4px 6px rgba(0,0,0,0.5);
+  position: relative;
 }
 
+/* Topbar acting as an in-game PDA/Clipboard */
 .topbar {
-  min-height: 46px;
+  min-height: 50px;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.28rem 0.55rem;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 3px solid var(--accent); /* Blood streak indicator */
 }
 
 .topbar-title h1 {
   margin: 0;
-  font-size: 0.86rem;
+  font-size: 1.1rem;
+  font-family: var(--font-sys);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-shadow: 0 0 5px var(--accent-glow);
 }
 
 .topbar-title p {
   margin: 0.12rem 0 0;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
+  font-family: var(--font-sys);
 }
 
 .top-nav {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
+/* Nav links styled like mechanical typewriter keys or inventory tabs */
 .top-nav a {
   text-decoration: none;
   color: var(--ink);
   border: 1px solid var(--line);
-  padding: 0.24rem 0.5rem;
-  border-radius: 8px;
-  text-transform: capitalize;
-  font-size: 0.78rem;
+  background: var(--panel-soft);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-family: var(--font-sys);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 0 var(--line);
+  transition: all 0.1s ease;
+}
+
+.top-nav a:hover {
+  background: var(--line);
+  color: var(--ink);
 }
 
 .top-nav a.active {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 var(--bg);
+  transform: translateY(2px);
+  text-shadow: none;
 }
 
 .topbar-actions {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .game-window {
@@ -110,10 +165,12 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  border: 2px solid var(--line);
+  border-right-color: #0b140e;
+  border-bottom-color: #0b140e;
+  background: #050806;
   overflow: hidden;
-  background: #0b0f13;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
 }
 
 .room-image,
@@ -122,11 +179,14 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Don't stretch the horror images */
+  background: #000;
+  filter: contrast(1.1) brightness(0.8);
 }
 
 .encounter {
   pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(138,3,3,0.5));
 }
 
 .overlay {
@@ -135,33 +195,93 @@ body {
 }
 
 .overlay-left {
-  left: 0.8rem;
-  top: 0.8rem;
-  width: min(285px, 29vw);
+  left: 1rem;
+  top: 1rem;
+  width: min(300px, 30vw);
 }
 
 .overlay-right {
-  right: 0.8rem;
+  right: 1rem;
   top: auto;
-  bottom: 3.65rem;
-  width: min(450px, 35vw);
-  max-height: 54%;
+  bottom: 4rem;
+  width: min(480px, 40vw);
+  max-height: 60%;
   display: grid;
-  gap: 0.5rem;
-  overflow: auto;
-  padding-right: 0.1rem;
+  gap: 0.6rem;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg);
+}
+
+.overlay-right::-webkit-scrollbar {
+  width: 6px;
+}
+.overlay-right::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+.overlay-right::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 3px;
 }
 
 .overlay-bottom {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 0.8rem;
-  width: min(980px, calc(100% - 1.6rem));
+  bottom: 1rem;
+  width: min(800px, calc(100% - 2rem));
   pointer-events: none;
 }
 
+/* Tattered Paper styling for Intel / Blog reading panels */
+.route-intel, .blog {
+  background: var(--paper-bg);
+  color: var(--ink-dark);
+  text-shadow: none;
+  border: none;
+  border-radius: 1px;
+  padding: 1rem;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.6), inset 0 0 20px rgba(150, 130, 90, 0.4);
+  position: relative;
+}
+
+/* Paper edge tear illusion using pseudo elements */
+.route-intel::before, .blog::before {
+  content: "";
+  position: absolute;
+  top: -3px; left: 0; right: 0; height: 4px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="4"><path d="M0 4 l2.5 -3 l2.5 3 l2.5 -2 l2.5 2" fill="%23e2dfd3"/></svg>') repeat-x;
+}
+
+.route-intel h3, .blog h3 {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.route-intel p, .blog p {
+  color: var(--ink-dark);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.route-intel .intel-block {
+  margin-top: 0.6rem;
+  border-top: 1px dashed #a8a38e;
+  padding-top: 0.6rem;
+}
+
+.route-intel .intel-block h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #111;
+}
+
+/* Regular game interface panels */
 .panel {
-  padding: 0.65rem 0.75rem;
+  padding: 0.75rem 0.85rem;
 }
 
 .panel--interactive {
@@ -169,77 +289,74 @@ body {
 }
 
 .panel h3 {
-  margin: 0 0 0.45rem;
-  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
 }
 
 .panel p {
   margin: 0.25rem 0;
-  line-height: 1.32;
+  line-height: 1.4;
   color: var(--muted);
 }
 
-.route-intel .intel-block {
-  margin-top: 0.45rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 0.45rem;
-}
-
-.route-intel .intel-block h4 {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.route-intel .intel-block p {
-  margin-top: 0.3rem;
+.stats h3 {
+  color: var(--warn);
+  font-family: var(--font-sys);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.2rem;
 }
 
 .inworld-log {
   margin: 0;
-  padding: 0.52rem 0.78rem;
+  padding: 0.6rem 1rem;
   color: var(--warn);
-  font-weight: 600;
+  background: rgba(10, 5, 5, 0.9);
+  border-left: 4px solid var(--accent);
+  font-family: var(--font-sys);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 0 0 4px rgba(212, 160, 23, 0.5);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.8);
 }
 
+/* Hotspots */
 .hotspot {
   position: absolute;
-  border: 1px dashed rgba(117, 212, 127, 0.45);
-  background: rgba(117, 212, 127, 0.1);
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
   cursor: pointer;
-  transition:
-    box-shadow 120ms ease,
-    transform 120ms ease,
-    background-color 120ms ease,
-    border-color 120ms ease;
+  transition: all 150ms ease;
 }
 
 .hotspot:hover,
 .hotspot:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-  box-shadow:
-    0 0 0 2px rgba(117, 212, 127, 0.35),
-    0 0 16px rgba(117, 212, 127, 0.35);
-  transform: scale(1.02);
+  background: rgba(138, 3, 3, 0.2);
+  border-color: var(--accent);
+  box-shadow: inset 0 0 15px rgba(138, 3, 3, 0.4), 0 0 10px rgba(138, 3, 3, 0.5);
 }
 
 .hotspot::after {
   content: attr(data-hotspot-label);
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 10px);
   transform: translateX(-50%);
-  padding: 0.22rem 0.45rem;
-  border-radius: 6px;
-  border: 1px solid var(--line);
-  background: rgba(8, 13, 18, 0.95);
+  padding: 0.3rem 0.6rem;
+  border-radius: 2px;
+  border: 1px solid var(--accent);
+  background: rgba(10, 5, 5, 0.95);
   color: var(--ink);
-  font-size: 0.72rem;
+  font-family: var(--font-sys);
+  font-size: 1rem;
+  letter-spacing: 1px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 120ms ease;
+  transition: opacity 150ms ease;
 }
 
 .hotspot:hover::after,
@@ -247,27 +364,9 @@ body {
   opacity: 1;
 }
 
-.hotspot--door {
-  border-style: solid;
-}
-
-.hotspot--door.hotspot--unlocked:hover,
-.hotspot--door.hotspot--unlocked:focus-visible {
-  box-shadow:
-    0 0 0 2px rgba(117, 212, 127, 0.4),
-    0 0 24px rgba(117, 212, 127, 0.45);
-}
-
 .hotspot--locked {
-  border-color: rgba(232, 109, 109, 0.55);
-  background: rgba(232, 109, 109, 0.12);
-}
-
-.hotspot--locked:hover,
-.hotspot--locked:focus-visible {
-  box-shadow:
-    0 0 0 2px rgba(232, 109, 109, 0.35),
-    0 0 18px rgba(232, 109, 109, 0.3);
+  border-color: rgba(200, 30, 30, 0.3);
+  background: rgba(200, 30, 30, 0.05);
 }
 
 .hotspot--shake {
@@ -275,26 +374,15 @@ body {
 }
 
 @keyframes hotspotShake {
-  0% {
-    transform: translateX(0);
-  }
-  20% {
-    transform: translateX(-6px);
-  }
-  40% {
-    transform: translateX(6px);
-  }
-  60% {
-    transform: translateX(-5px);
-  }
-  80% {
-    transform: translateX(5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-6px); }
+  40%  { transform: translateX(6px); }
+  60%  { transform: translateX(-5px); }
+  80%  { transform: translateX(5px); }
+  100% { transform: translateX(0); }
 }
 
+/* Merchant List */
 .merchant-list {
   list-style: none;
   margin: 0;
@@ -305,11 +393,15 @@ body {
 
 .merchant-list li {
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.5rem;
+  padding: 0.6rem;
   background: var(--panel-soft);
   display: grid;
   gap: 0.5rem;
+}
+
+.merchant-list li strong {
+  color: #fff;
+  font-size: 1.1rem;
 }
 
 .merchant-actions {
@@ -317,69 +409,103 @@ body {
   gap: 0.4rem;
 }
 
+/* Blog Posts styling matching Tattered Paper */
 .blog article {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--panel-soft);
-  padding: 0.6rem;
-  margin-top: 0.45rem;
+  border-top: 2px dashed #a8a38e;
+  padding-top: 0.8rem;
+  margin-top: 0.8rem;
+}
+.blog article:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0.4rem;
 }
 
 .blog h4 {
   margin: 0;
+  font-size: 1.1rem;
+  color: #111;
 }
 
 .blog time {
-  color: var(--muted);
+  color: #777;
   font-size: 0.85rem;
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-sys);
 }
 
+/* Forms & Buttons (Typewriter Mechanical Feel) */
 button,
 input,
 textarea {
-  font: inherit;
+  font-family: var(--font-typewriter);
+  font-size: 0.9rem;
+  outline: none;
 }
 
 button {
   border: 1px solid var(--line);
+  border-bottom: 3px solid #0d140f;
   color: var(--ink);
-  background: #1b2a36;
-  padding: 0.4rem 0.62rem;
-  border-radius: 8px;
+  background: #1c2b21;
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
   cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.1s;
+}
+
+button:active {
+  border-bottom-width: 1px;
+  transform: translateY(2px);
+  background: #141f17;
 }
 
 button:hover {
   border-color: var(--accent);
+  color: #fff;
 }
 
 input,
 textarea {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.42rem 0.52rem;
+  padding: 0.5rem;
   color: var(--ink);
-  background: #0f171e;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+}
+input:focus, textarea:focus {
+  border-color: var(--warn);
 }
 
 label {
   display: grid;
-  gap: 0.25rem;
-  margin-bottom: 0.5rem;
+  gap: 0.3rem;
+  margin-bottom: 0.6rem;
+  color: var(--muted);
 }
 
 .status {
+  padding: 0.5rem;
   margin-top: 0.5rem;
-  font-weight: 600;
+  font-weight: bold;
+  font-family: var(--font-sys);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
 }
 
 .status.ok {
-  color: var(--accent);
+  color: #2ea83c;
+  border: 1px solid #2ea83c;
+  background: rgba(46, 168, 60, 0.1);
 }
 
 .status.error {
   color: var(--danger);
+  border: 1px solid var(--danger);
+  background: rgba(194, 8, 8, 0.1);
 }
 
 .meta-footer {
@@ -388,27 +514,24 @@ label {
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.24rem 0.55rem;
+  padding: 0.3rem 1rem;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
+  font-family: var(--font-sys);
+  text-transform: uppercase;
+  border-top: 1px solid var(--line);
 }
 
 @media (max-width: 1080px) {
   .topbar {
     grid-template-columns: 1fr;
-    justify-items: stretch;
+    justify-items: center;
   }
-
-  .top-nav {
-    justify-content: flex-start;
-  }
-
   .overlay-left {
     width: min(250px, 42vw);
   }
-
   .overlay-right {
-    width: min(380px, 52vw);
+    width: min(400px, 52vw);
   }
 }
 
@@ -416,33 +539,28 @@ label {
   body {
     overflow: auto;
   }
-
   .app-shell {
     height: auto;
     min-height: 100%;
   }
-
   .game-window {
     min-height: 70vh;
   }
-
   .overlay-left {
     left: 0.5rem;
     top: 0.5rem;
     width: min(220px, 60vw);
   }
-
   .overlay-right {
     left: 0.5rem;
     right: 0.5rem;
     width: auto;
     top: auto;
     bottom: 3.7rem;
-    max-height: 52%;
+    max-height: 48%;
   }
-
   .meta-footer {
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
   }
 }
