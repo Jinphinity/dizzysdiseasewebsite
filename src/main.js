@@ -144,6 +144,12 @@ async function bootstrap() {
     const action = target.dataset.action;
     if (action) {
       switch (action) {
+        case 'toggle-inventory':
+          const overlay = document.getElementById('inventory-overlay');
+          if (overlay) {
+            overlay.classList.toggle('is-open');
+          }
+          return;
         case 'toggle-mute':
           audio.toggleMute();
           statusMessage = audio.isMuted() ? 'Audio muted.' : 'Audio enabled.';

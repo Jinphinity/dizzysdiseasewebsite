@@ -14,6 +14,11 @@ function renderHotspots({ route, state, lockedHotspotId }) {
         .filter(Boolean)
         .join(' ');
 
+      let inlineStyle = `left:${hotspot.x}%;top:${hotspot.y}%;width:${hotspot.width}%;height:${hotspot.height}%;`;
+      if (hotspot.imageUrl) {
+        inlineStyle += `background-image: url('${hotspot.imageUrl}');`;
+      }
+
       return `
         <button
           class="${classes}"
@@ -23,7 +28,7 @@ function renderHotspots({ route, state, lockedHotspotId }) {
           data-hotspot-label="${hotspot.label}"
           aria-label="${hotspot.label}"
           title="${hotspot.label}"
-          style="left:${hotspot.x}%;top:${hotspot.y}%;width:${hotspot.width}%;height:${hotspot.height}%;"
+          style="${inlineStyle}"
         ></button>
       `;
     })
@@ -37,8 +42,8 @@ function renderMerchant({ catalog, state }) {
       <p>Buy or sell operational tools using recovered loot currency.</p>
       <ul class="merchant-list">
         ${catalog
-          .map(
-            (item) => `
+      .map(
+        (item) => `
               <li>
                 <div>
                   <strong>${item.name}</strong>
@@ -51,8 +56,8 @@ function renderMerchant({ catalog, state }) {
                 </div>
               </li>
             `
-          )
-          .join('')}
+      )
+      .join('')}
       </ul>
       <p class="meta">Current inventory: ${state.player.inventory.join(', ') || 'none'}</p>
     </section>
@@ -117,16 +122,16 @@ function renderBlog(route) {
     <section class="panel blog">
       <h3>Blog Posts</h3>
       ${posts
-        .map(
-          (post) => `
+      .map(
+        (post) => `
             <article>
               <h4>${post.title}</h4>
               <time datetime="${post.date}">${post.date}</time>
               <p>${post.body}</p>
             </article>
           `
-        )
-        .join('')}
+      )
+      .join('')}
     </section>
   `;
 }
@@ -137,15 +142,15 @@ function renderRouteIntel(route) {
       <h3>${route.title}</h3>
       <p>${route.subtitle ?? ''}</p>
       ${route.infoBlocks
-        .map(
-          (block) => `
+      .map(
+        (block) => `
             <article class="intel-block">
               <h4>${block.heading}</h4>
               <p>${block.body}</p>
             </article>
           `
-        )
-        .join('')}
+      )
+      .join('')}
     </section>
   `;
 }
@@ -184,16 +189,17 @@ export function renderApp({
         </div>
         <nav class="top-nav" aria-label="Primary">
           ${routeOrder
-            .map(
-              (path) => `
+      .map(
+        (path) => `
                 <a href="${routeToHref(path)}" class="${path === route.path ? 'active' : ''}">
                   ${path === '/' ? 'home' : path.slice(1)}
                 </a>
               `
-            )
-            .join('')}
+      )
+      .join('')}
         </nav>
         <div class="topbar-actions">
+          <button data-action="toggle-inventory">Inventory</button>
           <button data-action="toggle-mute">Audio: ${isMuted ? 'Off' : 'On'}</button>
           <button data-action="reset-save">Reset Save</button>
         </div>
@@ -203,11 +209,10 @@ export function renderApp({
         <div class="viewport" data-viewport data-route="${route.path}">
           <img class="room-image" src="${route.heroImage}" alt="${route.title} environment" />
           ${renderHotspots({ route, state, lockedHotspotId })}
-          ${
-            activeEncounter
-              ? `<img class="encounter" src="${encounterFrameSrc}" alt="active encounter target" />`
-              : ''
-          }
+          ${activeEncounter
+      ? `<img class="encounter" src="${encounterFrameSrc}" alt="active encounter target" />`
+      : ''
+    }
 
           <aside class="overlay overlay-left">
             <section class="panel stats">
@@ -229,6 +234,28 @@ export function renderApp({
           <div class="overlay overlay-bottom" aria-live="polite">
             <p class="inworld-log">${statusMessage ?? 'Awaiting interaction...'}</p>
           </div>
+
+          <!-- Inventory Overlay (Diegetic UI) -->
+          <div class="inventory-overlay-container" id="inventory-overlay">
+            <div class="inventory-header">
+              <h2>Personnel Inventory</h2>
+              <button class="inventory-close-btn" data-action="toggle-inventory">X CLOSE</button>
+            </div>
+            <p><strong>Loot Recovered:</strong> ${state.player.loot}</p>
+            <div class="inventory-grid">
+              <!-- Placeholder slots for aesthetic handoff -->
+              <div class="inventory-slot"></div>
+              <div class="inventory-slot"></div>
+              <div class="inventory-slot"></div>
+              <div class="inventory-slot"></div>
+              <div class="inventory-slot"></div>
+              <div class="inventory-slot"></div>
+              <div class="inventory-slot"></div>
+              <div class="inventory-slot"></div>
+            </div>
+            <p style="margin-top: 1rem; color: var(--muted);">Select an item to inspect or equip.</p>
+          </div>
+
         </div>
       </section>
 
