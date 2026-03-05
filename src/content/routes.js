@@ -7,20 +7,20 @@ export const ROUTES = {
     path: '/',
     title: 'Safehouse Arrival',
     assignmentLabel: 'Home Page',
-    subtitle: 'Guest safety command center for immersive hospitality operations.',
+    subtitle: 'Welcome to the interactive teaser for Dizzy\'s Disease.',
     heroImage: '/assets/rooms/home-safehouse.png',
     infoBlocks: [
       {
-        heading: 'Mission',
-        body: 'Deliver a premium survival-hospitality experience where every guest interaction feels immersive, safe, and unforgettable.'
+        heading: 'The Game',
+        body: 'Dizzy\'s Disease is a grueling tactical survival horror RPG blending immersive sim mechanics, intense resource scarcity, and puzzle-like combat.'
       },
       {
-        heading: 'Vision',
-        body: 'Build the most memorable hospitality narrative platform by blending guest service standards with interactive biopunk storytelling.'
+        heading: 'The Threat',
+        body: 'A mysterious neural virus, unleashed by erratic bio-computing, manipulates the mind, altering your perception of reality while horrific mutants hunt you.'
       },
       {
-        heading: 'Key Offerings',
-        body: 'Interactive tours, operations simulation, incident-response training, and loyalty-driven story progression.'
+        heading: 'Key Pillars',
+        body: 'Every bullet counts. Tactical Combat as a Puzzle, Scarcity & Risk, Mastery of Place, and an oppressive Atmosphere & Tension.'
       }
     ],
     hotspots: [
@@ -56,20 +56,20 @@ export const ROUTES = {
     path: '/archive',
     title: 'Archive Terminal',
     assignmentLabel: 'About Us',
-    subtitle: 'Company history and leadership records for hospitality operations.',
+    subtitle: 'Studio records and game development background.',
     heroImage: '/assets/rooms/archive-room.png',
     infoBlocks: [
       {
-        heading: 'History',
-        body: 'Founded as a boutique crisis-hospitality studio, the team evolved into a narrative operations lab specializing in high-engagement guest journeys.'
+        heading: 'The Studio',
+        body: 'We are an indie development team passionately dedicated to pushing the boundaries of the survival horror genre by making players think, panic, and adapt.'
       },
       {
-        heading: 'Values',
-        body: 'Guest trust, operational transparency, and resilient service design define every hospitality touchpoint in the brand experience.'
+        heading: 'Our Vision',
+        body: 'To create a deeply atmospheric, systems-driven experience where tactical planning and environmental awareness mean the difference between life and death.'
       },
       {
-        heading: 'Team',
-        body: 'Operations lead, guest-experience director, security systems designer, and narrative producer collaborate across every release.'
+        heading: 'The Journey',
+        body: 'Originating as a conceptual neural-virus ARG, Dizzy\'s Disease has evolved into a fully fledged interactive world built on Unreal Engine.'
       }
     ],
     hotspots: [
@@ -93,20 +93,20 @@ export const ROUTES = {
     path: '/armory',
     title: 'Armory Services Desk',
     assignmentLabel: 'Services Page',
-    subtitle: 'Service catalog and pricing tiers for guest support operations.',
+    subtitle: 'Pre-order tiers and Kickstarter backer rewards.',
     heroImage: '/assets/rooms/armory-service.png',
     infoBlocks: [
       {
-        heading: 'Service Tier: Essential',
-        body: 'Starter package including guided onboarding, rapid-response basics, and standard inventory access.'
+        heading: 'Tier 1: Survivor',
+        body: 'Get early access to the PC Alpha build, a digital copy of the final game, and an exclusive Discord backer role.'
       },
       {
-        heading: 'Service Tier: Advanced',
-        body: 'Extended equipment access, premium response support, and scenario-based preparedness modules.'
+        heading: 'Tier 2: Operative',
+        body: 'Includes Alpha access, the digital soundtrack and lore artbook, plus your name hidden as an easter egg in the game.'
       },
       {
-        heading: 'Service Tier: Command',
-        body: 'Full operations concierge, custom analytics reporting, and high-priority mission support workflows.'
+        heading: 'Tier 3: Commander',
+        body: 'All previous digital rewards plus a premium physical collector\'s edition containing the scale Safehouse Diorama.'
       }
     ],
     hotspots: []
@@ -115,12 +115,12 @@ export const ROUTES = {
     path: '/comms',
     title: 'Communications Hub',
     assignmentLabel: 'Contact Us Page',
-    subtitle: 'Direct guest and partner communications channel.',
+    subtitle: 'Direct line to the development team.',
     heroImage: '/assets/rooms/comms-room.png',
     infoBlocks: [
       {
-        heading: 'Inquiry Workflow',
-        body: 'Guests and partners can submit requests directly through this secure transmission form.'
+        heading: 'Signal the Devs',
+        body: 'Use this secure transmission relay for press inquiries, business deals, community questions, or reporting bugs in the Alpha build.'
       }
     ],
     contact: {
@@ -135,30 +135,26 @@ export const ROUTES = {
     path: '/devlog',
     title: 'Evidence Board Devlog',
     assignmentLabel: 'Blog Page',
-    subtitle: 'Hospitality industry insights and development updates.',
+    subtitle: 'System updates and behind-the-scenes game development.',
     heroImage: '/assets/rooms/devlog-board.png',
     infoBlocks: [
       {
-        heading: 'Post 1: Hospitality Through Interactive Narrative',
-        body: 'We map guest lifecycle principles to interactive storytelling loops so visitors remember key brand information through participation.'
-      },
-      {
-        heading: 'Post 2: Operational Safety as Experience Design',
-        body: 'Service reliability, incident clarity, and response pacing are treated as both UX and hospitality fundamentals across every update.'
+        heading: 'Development Philosophy',
+        body: 'We believe in transparent development. Every month, we pin new evidence to this board detailing our design process, art milestones, and mechanics testing.'
       }
     ],
     blogPosts: [
       {
-        id: 'post-hospitality-loop',
-        title: 'Designing a Hospitality-Centered Survival Loop',
+        id: 'post-tactical-horror',
+        title: 'Tactical Combat as a Puzzle',
         date: '2026-03-03',
-        body: 'Our latest build aligns guest service principles with interactive progression. The welcome flow now teaches mission, values, and service options through playable moments.'
+        body: 'In Dizzy\'s Disease, you can\'t just run and gun. We recently finalized the \'Scarcity\' system where players must treat every encounter as a strategic puzzle, hoarding ammo and utilizing the environment.'
       },
       {
-        id: 'post-ops-trust',
-        title: 'Building Trust Through Operational Transparency',
+        id: 'post-wobbly-aim',
+        title: 'Building Tension: The Wobbly Aim Mechanic',
         date: '2026-03-03',
-        body: 'We publish incident-readiness notes, system updates, and response protocols so guests and partners understand how every service layer works.'
+        body: 'To reflect the protagonist\'s decaying mental state from the neural virus, we integrated a physics-driven wobbly reticle. Precision takes focus, adding panic to every shot.'
       }
     ],
     hotspots: [
