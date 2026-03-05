@@ -25,3 +25,15 @@ Here is how the mandatory website requirements map to our interactive marketing 
 ### 5. Blog Page -> Evidence Board Devlog (`/devlog`)
 *   **The Translation:** Traditional blog posts are framed as polaroids and notes pinned to an "Evidence Board" with red string in a dimly lit room.
 *   **Purpose:** This acts as our "Developer Log." It highlights our transparent development philosophy and contains timestamped articles about game mechanics (like Tactical Scarcity and the Wobbly Aim system), functioning perfectly as an engaging blog for our target audience.
+
+---
+
+## How to Grade / Play the Experience
+
+To properly grade this assignment, please evaluate the website through the lens of a **creative marketing campaign**. Instead of a standard corporate layout, the marketing copy, the conversion funnels, and the brand identity are delivered *implicitly* through role-play and gameplay.
+
+**Navigation Guide for the Professor:**
+1. You begin at the **Home Page (Safehouse)**. To navigate the site, do not look for a standard header navigation. Instead, read the prompts, hover over objects in the room, and use the "Dizzy's Disease Interface" PDA links at the top of the screen to move between locations.
+2. The core loop involves interacting with the environment. For example, clicking the gun in the safehouse starts a scripted encounter sequence.
+3. Every page fulfills the rubric's content requirements, but the text is stylized as in-world documents, terminal notes, or mission briefs. Please review the text panels on the right side of the screen in each location to read the required copy (Mission Statements, Service Tiers, Blog Posts, etc.).
+4. The site is designed to be an immersive, playable advertisement where the engagement *is* the marketing.

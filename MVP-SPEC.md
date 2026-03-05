@@ -530,7 +530,36 @@ Migration path:
 2. On account creation, local profile serialized and uploaded.
 3. Merge rules applied server-side for inventory/progress conflicts.
 
-## 15. Definition of Done (MVP)
+## 15. Next Major Feature Phase (Spec Additions)
+
+### 15.1 Dynamic Diegetic UI
+- **Contextual Cursors**: Hovering over different interactable elements alters the cursor to specifically matching icons (e.g. magnifying glass for inspection, open/close hand for grabbing, discrete reticles unique to different equipped firearms).
+- **Layered Hotspots**: Interactive items are decoupled from the base room background. On-hover, the layered item enlarges, highlights, and shakes to clearly communicate interactivity.
+- **Inventory Overlay**: An on-screen UI toggle that slides/fades an inventory menu directly over the current scene without routing away from the active location.
+
+### 15.2 Functional Retro OS (Computer Terminal)
+- Interacting with in-world computers triggers a smooth pan/zoom in until the monitor fills the viewport.
+- The screen acts as a simulated retro operating system allowing the player to engage in narrative hacking puzzles and read deeper lore, keeping the player anchored inside the 3D space rather than switching to an abstract UI page.
+
+### 15.3 The Metroid-Prime Gun Arm
+- An independent, pre-rendered 1st-person gun arm asset layered over the viewpoint.
+- The camera itself remains fixed, but the arm aligns dynamically with the user's cursor position.
+- Tether constraints limit the rotation (e.g., anchored bottom-right, cannot aim past the center X/Y bounds unreasonably) to maintain visual realism without needing real-time 3D rendering.
+
+### 15.4 Cinematic Encounter Implementation
+- Encounters utilize realistic, pre-rendered animated frames of a mutant zombie.
+- **Phases:** 
+  1. Distant wandering/walking animation.
+  2. Approach phase (scaling up, accompanied by screen flickers and tension audio).
+  3. Lunge read (arms raising).
+  4. Final execution frame (face directly clamping onto the camera/viewport).
+- Visual identity of the mutant must be strictly consistent across all pre-rendered frames.
+
+### 15.5 Full Profile Backend
+- Establish secure user authentication and profiles.
+- Migrate local storage save states to cloud persistence, allowing cross-device tracking and dedicated user progression through the marketing narrative.
+
+## 16. Definition of Done (MVP)
 
 MVP is complete only if all are true:
 - Five assignment pages are present and fully compliant.
