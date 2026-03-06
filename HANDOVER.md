@@ -5,6 +5,13 @@ This project was transitioned from a static UI skeleton to a fully functional, h
 
 *Note: All AI agents MUST read `PROJECT_AESTHETICS.md` before doing any visual work, and MUST read `.cortext/standards/GIT_HANDOVER.md` before committing work.*
 
+### **CRITICAL: CHECK-FIRST MANDATE**
+In this session, the AI (Gemini/Opus) initially failed to check if universal styles or git handover protocols already existed within `.cortext` before creating new ones. 
+**ALL FUTURE AGENTS MUST:**
+1. Search the root and `.cortext` for any existing rules before proposing a "new" system.
+2. Update/extend existing docs instead of duplicating content.
+3. This is the root cause of the current session's refactor bloat.
+
 ## Current Architecture State
 The backend monolith (`main.js`) has been decomposed. The state machine operates on a Redux-style reducer (`game-reducer.js`).
 
