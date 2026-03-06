@@ -1,6 +1,6 @@
 All AI agents (Claude, Gemini, Cursor) must refer to the .cortext repository configuration.
 
 Specifically, for ANY visual design, UI/CSS creation, or image/video generation tasks, YOU MUST READ the guidelines located at:
-.cortext/synthesis/AESTHETICS_CONTEXT.md
+PROJECT_AESTHETICS.md
 
 This app requires a highly specific "Survival Horror" and "Biopunk" aesthetic. No clean, modern tech UI should be generated. Read the aesthetic context file before outputting any visual-related code.
