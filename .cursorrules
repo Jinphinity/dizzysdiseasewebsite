@@ -4,3 +4,6 @@ Specifically, for ANY visual design, UI/CSS creation, or image/video generation 
 PROJECT_AESTHETICS.md
 
 This app requires a highly specific "Survival Horror" and "Biopunk" aesthetic. No clean, modern tech UI should be generated. Read the aesthetic context file before outputting any visual-related code.
+
+Additionally, when conducting a handover or ending a session, YOU MUST execute the checkpoint protocol defined at:
+.cortext/standards/GIT_HANDOVER.md

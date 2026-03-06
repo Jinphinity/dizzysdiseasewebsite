@@ -14,3 +14,9 @@ This project uses a highly specific **Survival Horror & Biopunk** aesthetic. The
 3. Typography must rely heavily on mechanical typewriter fonts.
 
 If you are asked to do visual design/engineering and have not yet read `PROJECT_AESTHETICS.md`, pause and `view_file` on it immediately before outputting any CSS or image prompts.
+
+## **Project Management & Version Control**
+When ending a session, finishing a feature, or conducting a handover, you **MUST** execute the checkpoint process defined in:
+`.cortext/standards/GIT_HANDOVER.md`
+
+Do not push empty or simple commits on exit. Update `HANDOVER.md` and use verbose commit messages (`git commit -m "handover: ..." -m "..."`).
