@@ -1,5 +1,7 @@
 # Engineering Protocol: Frontend & Backend AI Split
 
+**CRITICAL MANDATE FOR ALL AI AGENTS:** Before you perform *any* visual frontend changes, CSS updates, or code styling, you **MUST read the global style guide located at `.cortext/synthesis/AESTHETICS_CONTEXT.md`**. This strictly defines the Survival Horror theme color palette, typography, and structural texture constraints. Do not output visual code, layout structures, or image/video prompts without adhering strictly to it.
+
 ## 1. Core Philosophy
 To maintain the high-quality, immersive survival horror atmosphere of *Dizzy's Disease*, we heavily enforce a responsibility split between AI agents (or human developers) based on their comparative strengths.
 
