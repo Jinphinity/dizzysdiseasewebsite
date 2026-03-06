@@ -1,3 +1,3 @@
-[submodule "cortext"]
-	path = cortext
+[submodule ".cortext"]
+	path = .cortext
 	url = git@github.com:Jinphinity/cortext.git
