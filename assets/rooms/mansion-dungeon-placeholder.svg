@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Mansion Dungeon Placeholder</title>
+  <desc id="desc">Atmospheric placeholder for mansion routes until final estate art is delivered.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1d1716"/>
+      <stop offset="100%" stop-color="#080707"/>
+    </linearGradient>
+    <filter id="haze"><feGaussianBlur stdDeviation="20"/></filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="#050505" opacity="0.28"/>
+  <path d="M490 900 L620 214 L980 214 L1110 900" fill="#100c0c"/>
+  <rect x="648" y="214" width="304" height="360" fill="#0a0909" stroke="#3b2525" stroke-width="4" opacity="0.92"/>
+  <path d="M800 214 V572" stroke="#2c1c1c" stroke-width="6" opacity="0.72"/>
+  <path d="M598 354 H1002" stroke="#2b1f1f" stroke-width="10" opacity="0.35"/>
+  <path d="M348 900 L520 566 L600 900" fill="#0b0a0a"/>
+  <path d="M1252 900 L1080 566 L1000 900" fill="#0b0a0a"/>
+  <circle cx="800" cy="166" r="48" fill="#d0cfc5" opacity="0.08" filter="url(#haze)"/>
+  <path d="M760 170 L800 110 L840 170 Z" fill="#d0cfc5" opacity="0.12"/>
+  <path d="M760 170 L740 236 M840 170 L860 236 M800 170 V244" stroke="#d0cfc5" stroke-width="4" opacity="0.12"/>
+  <circle cx="1136" cy="246" r="74" fill="#8a0303" opacity="0.07" filter="url(#haze)"/>
+  <rect x="58" y="58" width="1484" height="784" rx="16" fill="none" stroke="#352827" stroke-width="2" opacity="0.6"/>
+  <text x="110" y="124" fill="#d0cfc5" font-family="Courier New, monospace" font-size="22" letter-spacing="3" opacity="0.64">VASQUEZ ESTATE</text>
+  <text x="110" y="154" fill="#978281" font-family="Courier New, monospace" font-size="14" letter-spacing="2" opacity="0.72">placeholder manor silhouette for foyer, study, and lab routes</text>
+  <text x="1080" y="806" fill="#978281" font-family="Courier New, monospace" font-size="14" letter-spacing="2" opacity="0.62">final estate scene pending Gemini visual pass</text>
+</svg>

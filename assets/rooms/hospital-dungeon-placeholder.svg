@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Hospital Dungeon Placeholder</title>
+  <desc id="desc">Atmospheric placeholder for hospital routes until final hospital art is delivered.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#171d1d"/>
+      <stop offset="100%" stop-color="#070909"/>
+    </linearGradient>
+    <filter id="spill"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="#060707" opacity="0.3"/>
+  <rect x="360" y="210" width="880" height="420" fill="#0b1010" opacity="0.88"/>
+  <rect x="420" y="272" width="280" height="250" fill="#121919" stroke="#2b3d3d" stroke-width="4" opacity="0.8"/>
+  <rect x="900" y="272" width="280" height="250" fill="#121919" stroke="#2b3d3d" stroke-width="4" opacity="0.8"/>
+  <path d="M800 210 V630" stroke="#223333" stroke-width="6" opacity="0.55"/>
+  <path d="M360 630 H1240" stroke="#1f2f2f" stroke-width="16" opacity="0.45"/>
+  <rect x="520" y="666" width="560" height="54" rx="10" fill="#0c1111" stroke="#233535" stroke-width="3" opacity="0.82"/>
+  <path d="M520 694 H1080" stroke="#374f4f" stroke-width="4" opacity="0.5"/>
+  <path d="M640 130 H960" stroke="#d0cfc5" stroke-width="14" opacity="0.08"/>
+  <path d="M800 40 V308" stroke="#d0cfc5" stroke-width="14" opacity="0.08"/>
+  <circle cx="1186" cy="234" r="78" fill="#8a0303" opacity="0.07" filter="url(#spill)"/>
+  <circle cx="800" cy="342" r="160" fill="#d0cfc5" opacity="0.04" filter="url(#spill)"/>
+  <rect x="58" y="58" width="1484" height="784" rx="16" fill="none" stroke="#273535" stroke-width="2" opacity="0.62"/>
+  <text x="110" y="124" fill="#d0cfc5" font-family="Courier New, monospace" font-size="22" letter-spacing="3" opacity="0.64">ST. MERIDIAN GENERAL</text>
+  <text x="110" y="154" fill="#7e8e8e" font-family="Courier New, monospace" font-size="14" letter-spacing="2" opacity="0.7">placeholder quarantine ruin for hospital dungeon routes</text>
+  <text x="1074" y="806" fill="#7e8e8e" font-family="Courier New, monospace" font-size="14" letter-spacing="2" opacity="0.62">final hospital scene pending Gemini visual pass</text>
+</svg>

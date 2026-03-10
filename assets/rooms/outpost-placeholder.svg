@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Outpost Placeholder</title>
+  <desc id="desc">Atmospheric placeholder for outpost routes until final outpost art is delivered.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#202b24"/>
+      <stop offset="100%" stop-color="#070a08"/>
+    </linearGradient>
+    <filter id="fog"><feGaussianBlur stdDeviation="24"/></filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="#050605" opacity="0.34"/>
+  <polygon points="0,900 0,540 360,510 470,900" fill="#0b120d"/>
+  <polygon points="1600,900 1600,510 1240,495 1124,900" fill="#0b120d"/>
+  <rect x="548" y="208" width="504" height="432" fill="#09100c" stroke="#2b3f31" stroke-width="4" opacity="0.94"/>
+  <rect x="714" y="278" width="172" height="362" fill="#050806" stroke="#395141" stroke-width="4" opacity="0.96"/>
+  <path d="M540 230 H1060" stroke="#8a0303" stroke-width="4" opacity="0.35"/>
+  <path d="M620 208 V640" stroke="#22362a" stroke-width="6" opacity="0.66"/>
+  <path d="M980 208 V640" stroke="#22362a" stroke-width="6" opacity="0.66"/>
+  <path d="M160 640 H1440" stroke="#1a2f22" stroke-width="14" opacity="0.45"/>
+  <path d="M160 690 H1440" stroke="#1a2f22" stroke-width="8" opacity="0.3"/>
+  <path d="M220 590 V760" stroke="#30493a" stroke-width="10" opacity="0.6"/>
+  <path d="M1380 590 V760" stroke="#30493a" stroke-width="10" opacity="0.6"/>
+  <polygon points="270,220 350,220 318,440" fill="#d4a017" opacity="0.09" filter="url(#fog)"/>
+  <polygon points="1250,220 1330,220 1294,456" fill="#d4a017" opacity="0.08" filter="url(#fog)"/>
+  <circle cx="318" cy="196" r="18" fill="#d4a017" opacity="0.25"/>
+  <circle cx="1290" cy="196" r="18" fill="#d4a017" opacity="0.2"/>
+  <rect x="58" y="58" width="1484" height="784" rx="16" fill="none" stroke="#24352a" stroke-width="2" opacity="0.65"/>
+  <text x="110" y="124" fill="#d0cfc5" font-family="Courier New, monospace" font-size="22" letter-spacing="3" opacity="0.64">OUTPOST ACCESS POINT</text>
+  <text x="110" y="154" fill="#7b8e80" font-family="Courier New, monospace" font-size="14" letter-spacing="2" opacity="0.72">placeholder fortification scene for gate and checkpoint routes</text>
+  <text x="1110" y="806" fill="#7b8e80" font-family="Courier New, monospace" font-size="14" letter-spacing="2" opacity="0.64">final outpost image pending Gemini visual pass</text>
+</svg>

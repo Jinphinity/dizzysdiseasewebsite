@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dizzy's Disease MVP - Hospital Lobby</title>
+    <link rel="icon" href="/dizzysdiseasewebsite/favicon.svg" type="image/svg+xml" />
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #1a2f22 0%, #121212 50%, #080808 100%);
+        color: #d0cfc5;
+        font-family: "Courier New", monospace;
+      }
+
+      .boot-fallback {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        box-sizing: border-box;
+      }
+
+      .boot-fallback__panel {
+        width: min(720px, 100%);
+        padding: 24px;
+        border: 1px solid rgba(138, 3, 3, 0.65);
+        background: rgba(18, 18, 18, 0.92);
+        box-shadow: 0 0 0 1px rgba(26, 47, 34, 0.5) inset, 0 24px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      .boot-fallback__eyebrow {
+        margin: 0 0 12px;
+        color: #8a0303;
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .boot-fallback__title {
+        margin: 0 0 12px;
+        font-size: 30px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .boot-fallback__body {
+        margin: 0 0 16px;
+        line-height: 1.7;
+        color: #b8b6ad;
+      }
+
+      .boot-fallback__steps {
+        margin: 0;
+        padding-left: 20px;
+        line-height: 1.7;
+        color: #d0cfc5;
+      }
+    </style>
+    <script type="module" crossorigin src="/dizzysdiseasewebsite/assets/main-ByfzycM7.js"></script>
+    <link rel="stylesheet" crossorigin href="/dizzysdiseasewebsite/assets/main-uwWF-Tpg.css">
+  </head>
+  <body data-initial-route="/dungeon/hospital/lobby">
+    <div id="app" data-app-shell="boot-fallback">
+      <section class="boot-fallback" data-app-fallback>
+        <div class="boot-fallback__panel">
+          <p class="boot-fallback__eyebrow">Dizzy's Disease Interface</p>
+          <h1 class="boot-fallback__title" data-app-fallback-title>Client Boot Pending</h1>
+          <p class="boot-fallback__body" data-app-fallback-body>If this page stays on the fallback screen, the browser loaded the HTML shell but did not execute the live JavaScript client.</p>
+          <ol class="boot-fallback__steps">
+            <li>Reload the page once.</li>
+            <li>Open the page in a private window with extensions disabled.</li>
+            <li>Confirm JavaScript is enabled in DevTools.</li>
+          </ol>
+        </div>
+      </section>
+    </div>
+    <noscript>
+      <section class="boot-fallback">
+        <div class="boot-fallback__panel">
+          <p class="boot-fallback__eyebrow">Dizzy's Disease Interface</p>
+          <h1 class="boot-fallback__title">JavaScript Required</h1>
+          <p class="boot-fallback__body">JavaScript is required to boot the live interface. Enable it, then reload this page.</p>
+        </div>
+      </section>
+    </noscript>
+    <script>
+      window.__DD_INLINE_BOOT__ = true;
+      document.documentElement.dataset.inlineJs = 'enabled';
+      window.setTimeout(() => {
+        if (window.__DD_BOOTSTRAPPED__) {
+          return;
+        }
+
+        const title = document.querySelector('[data-app-fallback-title]');
+        const body = document.querySelector('[data-app-fallback-body]');
+        if (!title || !body) {
+          return;
+        }
+
+        title.textContent = 'Module Client Blocked';
+        body.textContent = 'Inline JavaScript ran, but the module client did not finish booting. This usually points to a blocked module script, extension interference, or a browser profile issue on localhost.';
+      }, 1200);
+    </script>
+  </body>
+</html>

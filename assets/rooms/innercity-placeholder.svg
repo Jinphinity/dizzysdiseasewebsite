@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Inner City Placeholder</title>
+  <desc id="desc">Atmospheric placeholder for inner city routes until final city panorama art is delivered.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#18241d"/>
+      <stop offset="48%" stop-color="#0d1410"/>
+      <stop offset="100%" stop-color="#060907"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#121916"/>
+      <stop offset="100%" stop-color="#050605"/>
+    </linearGradient>
+    <radialGradient id="fog" cx="50%" cy="56%" r="48%">
+      <stop offset="0%" stop-color="rgba(208,207,197,0.12)"/>
+      <stop offset="55%" stop-color="rgba(26,47,34,0.10)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <filter id="blur-lg"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect width="1600" height="900" fill="#050605" opacity="0.28"/>
+  <polygon points="540,420 1060,420 1470,900 130,900" fill="url(#road)"/>
+  <path d="M788 420 L760 900" stroke="#647267" stroke-width="5" opacity="0.35"/>
+  <path d="M812 420 L840 900" stroke="#647267" stroke-width="5" opacity="0.35"/>
+  <path d="M0 370 L0 900 L360 900 L520 410 Z" fill="#09100c"/>
+  <path d="M1600 370 L1600 900 L1240 900 L1080 410 Z" fill="#09100c"/>
+  <rect x="88" y="194" width="166" height="320" fill="#0b120d" opacity="0.92"/>
+  <rect x="232" y="232" width="118" height="282" fill="#0f1712" opacity="0.88"/>
+  <rect x="1250" y="178" width="188" height="336" fill="#0b120d" opacity="0.92"/>
+  <rect x="1128" y="228" width="102" height="286" fill="#0f1712" opacity="0.86"/>
+  <rect x="540" y="132" width="150" height="250" fill="#0a110d" opacity="0.84"/>
+  <rect x="920" y="122" width="176" height="260" fill="#0a110d" opacity="0.84"/>
+  <circle cx="470" cy="260" r="52" fill="#284634" opacity="0.16" filter="url(#blur-lg)"/>
+  <circle cx="1188" cy="238" r="64" fill="#8a0303" opacity="0.13" filter="url(#blur-lg)"/>
+  <ellipse cx="800" cy="500" rx="450" ry="140" fill="#d0cfc5" opacity="0.05" filter="url(#blur-lg)"/>
+  <path d="M210 580 H520" stroke="#1f3025" stroke-width="6" opacity="0.55"/>
+  <path d="M1080 565 H1390" stroke="#1f3025" stroke-width="6" opacity="0.55"/>
+  <path d="M358 360 H512" stroke="#2b4534" stroke-width="10" opacity="0.38"/>
+  <path d="M1088 336 H1238" stroke="#2b4534" stroke-width="10" opacity="0.38"/>
+  <rect x="58" y="58" width="1484" height="784" rx="16" fill="none" stroke="#24352a" stroke-width="2" opacity="0.65"/>
+  <text x="110" y="124" fill="#d0cfc5" font-family="Courier New, monospace" font-size="22" letter-spacing="3" opacity="0.62">INNER CITY DEAD ZONE</text>
+  <text x="110" y="154" fill="#7b8e80" font-family="Courier New, monospace" font-size="14" letter-spacing="2" opacity="0.7">placeholder streetscape for graph-linked city routes</text>
+  <text x="1114" y="806" fill="#7b8e80" font-family="Courier New, monospace" font-size="14" letter-spacing="2" opacity="0.64">final panorama pending Gemini visual pass</text>
+</svg>
